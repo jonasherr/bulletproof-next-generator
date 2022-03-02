@@ -1,0 +1,65 @@
+[
+	{
+		"id": "0.9925694995212515",
+		"email": "moini@test.de",
+		"firstName": "Test",
+		"lastName": "Testinger",
+		"bio": "Bioooo",
+		"role": "ADMIN",
+		"password": "12345"
+	},
+	{
+		"id": "0.150081290466616",
+		"email": "moini@test.de",
+		"firstName": "Test",
+		"lastName": "Testinger",
+		"bio": "Bioooo",
+		"role": "ADMIN",
+		"password": "12345"
+	},
+	{
+		"id": "0.639339329508394",
+		"email": "tt@tt.de",
+		"firstName": "tt",
+		"lastName": "tt",
+		"bio": "Bioooo",
+		"role": "ADMIN",
+		"password": "tt"
+	},
+	{
+		"id": "0.3336251872774485",
+		"email": "moin@moin2.de",
+		"firstName": "moin",
+		"lastName": "moiniii",
+		"bio": "Bioooo",
+		"role": "ADMIN",
+		"password": "moin"
+	},
+	{
+		"id": "0.344264698993191",
+		"email": "tt@xn--t-0ga.de",
+		"firstName": "ttt5",
+		"lastName": "ttt",
+		"bio": "Bioooo",
+		"role": "ADMIN",
+		"password": "tt"
+	},
+	{
+		"id": "0.6155581127848195",
+		"email": "123@123.dew",
+		"firstName": "123",
+		"lastName": "123",
+		"bio": "Bioooo",
+		"role": "ADMIN",
+		"password": "123"
+	},
+	{
+		"id": "0.017553010344490305",
+		"email": "moini@test.de",
+		"firstName": "Test",
+		"lastName": "Testinger",
+		"bio": "Bioooo",
+		"role": "ADMIN",
+		"password": "12345"
+	}
+]

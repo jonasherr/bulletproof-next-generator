@@ -10,6 +10,7 @@ import {
 import clsx from "clsx";
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 import logo from "@/public/vercel.svg";
 import { useAuth } from "@/lib/auth";
@@ -24,11 +25,11 @@ type SideNavigationItem = {
 const SideNavigation = () => {
   const { checkAccess } = useAuthorization();
   const navigation = [
-    { name: "Dashboard", to: ".", icon: HomeIcon },
-    { name: "Discussions", to: "./discussions", icon: FolderIcon },
+    { name: "Dashboard", to: "/dashboard", icon: HomeIcon },
+    { name: "Discussions", to: "/discussions", icon: FolderIcon },
     checkAccess({ allowedRoles: [ROLES.ADMIN] }) && {
       name: "Users",
-      to: "./users",
+      to: "/users",
       icon: UsersIcon,
     },
   ].filter(Boolean) as SideNavigationItem[];
@@ -219,11 +220,13 @@ const Sidebar = () => {
 
 const Logo = () => {
   return (
-    <Link className="flex items-center text-white" to=".">
-      <img className="h-8 w-auto" src={logo} alt="Workflow" />
-      <span className="text-xl text-white font-semibold">
-        Bulletproof React
-      </span>
+    <Link href=".">
+      <div className="flex items-center text-white">
+        <Image className="h-8 w-auto" src={logo} alt="Workflow" />
+        <span className="text-xl text-white font-semibold">
+          Bulletproof React
+        </span>
+      </div>
     </Link>
   );
 };
