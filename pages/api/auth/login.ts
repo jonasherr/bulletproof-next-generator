@@ -9,7 +9,6 @@ export default function handler(
   try {
     const loginInput = req.body as LoginCredentialsDTO;
 
-    console.log(usersDB);
     const user = usersDB.find(
       (singleUser) =>
         singleUser.email === loginInput.email &&
