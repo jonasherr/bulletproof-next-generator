@@ -1,17 +1,17 @@
-import { useMutation } from 'react-query';
+import { useMutation } from "react-query";
 
-import { axios } from '@/lib/axios';
-import { MutationConfig, queryClient } from '@/lib/react-query';
-import { useNotificationStore } from '@/stores/notifications';
+import { axios } from "@/lib/axios";
+import { MutationConfig, queryClient } from "@/lib/react-query";
+import { useNotificationStore } from "@/stores/notifications";
 
-import { User } from '../types';
+import { User } from "../types";
 
 export type DeleteUserDTO = {
   userId: string;
 };
 
 export const deleteUser = ({ userId }: DeleteUserDTO) => {
-  return axios.delete(`/users/${userId}`);
+  return axios.delete(`/api/users/delete/${userId}`);
 };
 
 type UseDeleteUserOptions = {
@@ -23,27 +23,29 @@ export const useDeleteUser = ({ config }: UseDeleteUserOptions = {}) => {
 
   return useMutation({
     onMutate: async (deletedUser) => {
-      await queryClient.cancelQueries('users');
+      await queryClient.cancelQueries("users");
 
-      const previousUsers = queryClient.getQueryData<User[]>('users');
+      const previousUsers = queryClient.getQueryData<User[]>("users");
 
       queryClient.setQueryData(
-        'users',
-        previousUsers?.filter((discussion) => discussion.id !== deletedUser.userId)
+        "users",
+        previousUsers?.filter(
+          (discussion) => discussion.id !== deletedUser.userId
+        )
       );
 
       return { previousUsers };
     },
     onError: (_, __, context: any) => {
       if (context?.previousUsers) {
-        queryClient.setQueryData('users', context.previousUsers);
+        queryClient.setQueryData("users", context.previousUsers);
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries('users');
+      queryClient.invalidateQueries("users");
       addNotification({
-        type: 'success',
-        title: 'User Deleted',
+        type: "success",
+        title: "User Deleted",
       });
     },
     ...config,

@@ -1,12 +1,12 @@
-import { useQuery } from 'react-query';
+import { useQuery } from "react-query";
 
-import { axios } from '@/lib/axios';
-import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query';
+import { axios } from "@/lib/axios";
+import { ExtractFnReturnType, QueryConfig } from "@/lib/react-query";
 
-import { User } from '../types';
+import { User } from "../types";
 
 export const getUsers = (): Promise<User[]> => {
-  return axios.get(`/users`);
+  return axios.get(`/api/users`);
 };
 
 type QueryFnType = typeof getUsers;
@@ -18,7 +18,7 @@ type UseUsersOptions = {
 export const useUsers = ({ config }: UseUsersOptions = {}) => {
   return useQuery<ExtractFnReturnType<QueryFnType>>({
     ...config,
-    queryKey: ['users'],
+    queryKey: ["users"],
     queryFn: () => getUsers(),
   });
 };
