@@ -5,16 +5,15 @@ import {
   MenuAlt2Icon,
   UserIcon,
   UsersIcon,
-  XIcon,
 } from "@heroicons/react/outline";
 import clsx from "clsx";
 import * as React from "react";
 import Link from "next/link";
-import Image from "next/image";
-
-import logo from "@/public/vercel.svg";
 import { useAuth } from "@/lib/auth";
 import { ROLES, useAuthorization } from "@/lib/authorization";
+import { XIcon } from "@heroicons/react/solid";
+import Image from "next/image";
+import logo from "@/public/vercel.svg";
 
 type SideNavigationItem = {
   name: string;
@@ -107,16 +106,18 @@ const UserNavigation = () => {
               {userNavigation.map((item) => (
                 <Menu.Item key={item.name}>
                   {({ active }) => (
-                    <Link
-                      onClick={item.onClick}
-                      href={item.to}
+                    <div
                       className={clsx(
                         active ? "bg-gray-100" : "",
                         "block px-4 py-2 text-sm text-gray-700"
                       )}
                     >
-                      {item.name}
-                    </Link>
+                      {item.onClick ? (
+                        <button onClick={item.onClick}>{item.name}</button>
+                      ) : (
+                        <Link href={item.to}>{item.name}</Link>
+                      )}
+                    </div>
                   )}
                 </Menu.Item>
               ))}
@@ -220,9 +221,11 @@ const Sidebar = () => {
 
 const Logo = () => {
   return (
-    <Link href=".">
+    <Link href="/">
       <div className="flex items-center text-white">
-        <Image className="h-8 w-auto" src={logo} alt="Workflow" />
+        <div className="h-8 w-auto">
+          <Image src={logo} alt="Workflow" />
+        </div>
         <span className="text-xl text-white font-semibold">
           Bulletproof React
         </span>

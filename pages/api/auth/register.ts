@@ -4,7 +4,7 @@ import usersDB from "@/public/usersDB.json";
 import { writeJsonFileSync } from "write-json-file";
 import { ROLES } from "@/lib/authorization";
 
-export default function handler(
+export default function handleRegister(
   req: NextApiRequest,
   res: NextApiResponse<UserResponse>
 ) {

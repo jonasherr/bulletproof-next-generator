@@ -1,10 +1,10 @@
-import { useMutation } from 'react-query';
+import { useMutation } from "react-query";
 
-import { axios } from '@/lib/axios';
-import { MutationConfig, queryClient } from '@/lib/react-query';
-import { useNotificationStore } from '@/stores/notifications';
+import { axios } from "@/lib/axios";
+import { MutationConfig, queryClient } from "@/lib/react-query";
+import { useNotificationStore } from "@/stores/notifications";
 
-import { Comment } from '../types';
+import { Comment } from "../types";
 
 export type CreateCommentDTO = {
   data: {
@@ -14,7 +14,7 @@ export type CreateCommentDTO = {
 };
 
 export const createComment = ({ data }: CreateCommentDTO): Promise<Comment> => {
-  return axios.post('/comments', data);
+  return axios.post("/api/comments/create", data);
 };
 
 type UseCreateCommentOptions = {
@@ -22,17 +22,23 @@ type UseCreateCommentOptions = {
   config?: MutationConfig<typeof createComment>;
 };
 
-export const useCreateComment = ({ config, discussionId }: UseCreateCommentOptions) => {
+export const useCreateComment = ({
+  config,
+  discussionId,
+}: UseCreateCommentOptions) => {
   const { addNotification } = useNotificationStore();
 
   return useMutation({
     onMutate: async (newComment) => {
-      await queryClient.cancelQueries(['comments', discussionId]);
+      await queryClient.cancelQueries(["comments", discussionId]);
 
-      const previousComments = queryClient.getQueryData<Comment[]>(['comments', discussionId]);
+      const previousComments = queryClient.getQueryData<Comment[]>([
+        "comments",
+        discussionId,
+      ]);
 
       queryClient.setQueryData(
-        ['comments', discussionId],
+        ["comments", discussionId],
         [...(previousComments || []), newComment.data]
       );
 
@@ -40,14 +46,17 @@ export const useCreateComment = ({ config, discussionId }: UseCreateCommentOptio
     },
     onError: (_, __, context: any) => {
       if (context?.previousComments) {
-        queryClient.setQueryData(['comments', discussionId], context.previousComments);
+        queryClient.setQueryData(
+          ["comments", discussionId],
+          context.previousComments
+        );
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(['comments', discussionId]);
+      queryClient.invalidateQueries(["comments", discussionId]);
       addNotification({
-        type: 'success',
-        title: 'Comment Created',
+        type: "success",
+        title: "Comment Created",
       });
     },
     ...config,

@@ -38,7 +38,7 @@ export const DiscussionsList = () => {
           title: "",
           field: "id",
           Cell({ entry: { id } }) {
-            return <CustomLink to={`./${id}`}>View</CustomLink>;
+            return <CustomLink href={`/discussions/${id}`}>View</CustomLink>;
           },
         },
         {

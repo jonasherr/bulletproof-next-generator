@@ -1,0 +1,16 @@
+[
+	{
+		"id": "0.6898670170177468",
+		"title": "Moin",
+		"body": "Was geht?",
+		"teamId": "123",
+		"createdAt": 1646845383353
+	},
+	{
+		"id": "0.06244361713785351",
+		"title": "Neue Diskussion",
+		"body": "Test.\n**Fetter Text**",
+		"teamId": "123",
+		"createdAt": 1646850904208
+	}
+]

@@ -1,14 +1,14 @@
-import { ArchiveIcon } from '@heroicons/react/outline';
+import { ArchiveIcon } from "@heroicons/react/outline";
 
-import { Spinner, MDPreview } from '@/components/Elements';
-import { User } from '@/features/users';
-import { useAuth } from '@/lib/auth';
-import { POLICIES, Authorization } from '@/lib/authorization';
-import { formatDate } from '@/utils/format';
+import { MDPreview, Spinner } from "@/components/Elements";
+import { User } from "@/features/users";
+import { useAuth } from "@/lib/auth";
+import { Authorization, POLICIES } from "@/lib/authorization";
+import { formatDate } from "@/utils/format";
 
-import { useComments } from '../api/getComments';
+import { useComments } from "../api/getComments";
 
-import { DeleteComment } from './DeleteComment';
+import { DeleteComment } from "./DeleteComment";
 
 type CommentsListProps = {
   discussionId: string;
@@ -46,9 +46,13 @@ export const CommentsList = ({ discussionId }: CommentsListProps) => {
           key={comment.id || index}
           className="w-full bg-white shadow-sm p-4"
         >
-          <Authorization policyCheck={POLICIES['comment:delete'](user as User, comment)}>
+          <Authorization
+            policyCheck={POLICIES["comment:delete"](user as User, comment)}
+          >
             <div className="flex justify-between">
-              <span className="text-xs font-semibold">{formatDate(comment.createdAt)}</span>
+              <span className="text-xs font-semibold">
+                {formatDate(comment.createdAt)}
+              </span>
               <DeleteComment discussionId={discussionId} id={comment.id} />
             </div>
           </Authorization>

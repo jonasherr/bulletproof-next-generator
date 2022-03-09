@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { LoginCredentialsDTO, UserResponse } from "@/features/auth";
+import { AuthUser, LoginCredentialsDTO, UserResponse } from "@/features/auth";
 import usersDB from "@/public/usersDB.json";
 
-export default function handler(
+export default function handleLogin(
   req: NextApiRequest,
   res: NextApiResponse<UserResponse | undefined>
 ) {
@@ -13,7 +13,7 @@ export default function handler(
       (singleUser) =>
         singleUser.email === loginInput.email &&
         singleUser.password === loginInput.password
-    );
+    ) as AuthUser;
 
     if (user === undefined) throw new Error();
 

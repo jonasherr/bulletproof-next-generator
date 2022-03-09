@@ -1,12 +1,12 @@
-import { useQuery } from 'react-query';
+import { useQuery } from "react-query";
 
-import { axios } from '@/lib/axios';
-import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query';
+import { axios } from "@/lib/axios";
+import { ExtractFnReturnType, QueryConfig } from "@/lib/react-query";
 
-import { Discussion } from '../types';
+import { Discussion } from "../types";
 
 export const getDiscussions = (): Promise<Discussion[]> => {
-  return axios.get('/discussions');
+  return axios.get("/api/discussions");
 };
 
 type QueryFnType = typeof getDiscussions;
@@ -18,7 +18,7 @@ type UseDiscussionsOptions = {
 export const useDiscussions = ({ config }: UseDiscussionsOptions = {}) => {
   return useQuery<ExtractFnReturnType<QueryFnType>>({
     ...config,
-    queryKey: ['discussions'],
+    queryKey: ["discussions"],
     queryFn: () => getDiscussions(),
   });
 };

@@ -1,5 +1,5 @@
 import createDOMPurify from "dompurify";
-import marked from "marked";
+import { marked } from "marked";
 
 export type MDPreviewProps = {
   value: string;
@@ -10,7 +10,7 @@ export const MDPreview = ({ value = "" }: MDPreviewProps) => {
     <div
       className="p-2 w-full prose prose-indigo"
       dangerouslySetInnerHTML={{
-        __html: createDOMPurify(window).sanitize(marked(value)),
+        __html: createDOMPurify(window).sanitize(marked.parse(value)),
       }}
     />
   );

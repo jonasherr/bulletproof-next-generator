@@ -1,12 +1,16 @@
-import { useQuery } from 'react-query';
+import { useQuery } from "react-query";
 
-import { axios } from '@/lib/axios';
-import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query';
+import { axios } from "@/lib/axios";
+import { ExtractFnReturnType, QueryConfig } from "@/lib/react-query";
 
-import { Comment } from '../types';
+import { Comment } from "../types";
 
-export const getComments = ({ discussionId }: { discussionId: string }): Promise<Comment[]> => {
-  return axios.get(`/comments`, {
+export const getComments = ({
+  discussionId,
+}: {
+  discussionId: string;
+}): Promise<Comment[]> => {
+  return axios.get(`/api/comments`, {
     params: {
       discussionId,
     },
@@ -22,7 +26,7 @@ type UseCommentsOptions = {
 
 export const useComments = ({ discussionId, config }: UseCommentsOptions) => {
   return useQuery<ExtractFnReturnType<QueryFnType>>({
-    queryKey: ['comments', discussionId],
+    queryKey: ["comments", discussionId],
     queryFn: () => getComments({ discussionId }),
     ...config,
   });
