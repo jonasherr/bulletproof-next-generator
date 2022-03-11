@@ -1,17 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import usersDB from "@/public/usersDB.json";
-import { writeJsonFileSync } from "write-json-file";
+import { supabase } from "@/lib/initSupabase";
 
-export default function deleteDiscussion(
+export default async function deleteUser(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const { userId } = req.query;
 
-  writeJsonFileSync(
-    "./public/usersDB.json",
-    usersDB.filter((user) => user.id !== userId)
-  );
+  if (typeof userId !== "string") return res.status(500);
+
+  const { error } = await supabase.auth.api.deleteUser(userId);
+
+  if (error !== null) res.status(500);
 
   res.status(200);
 }

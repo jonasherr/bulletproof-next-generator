@@ -1,21 +1,31 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { AuthUser, LoginCredentialsDTO, UserResponse } from "@/features/auth";
-import usersDB from "@/public/usersDB.json";
+import { LoginCredentialsDTO, UserResponse } from "@/features/auth";
+import { PrismaClient } from "@prisma/client";
+import crypto from "crypto";
 
-export default function handleLogin(
+const prisma = new PrismaClient();
+
+export default async function handleLogin(
   req: NextApiRequest,
   res: NextApiResponse<UserResponse | undefined>
 ) {
   try {
     const loginInput = req.body as LoginCredentialsDTO;
 
-    const user = usersDB.find(
-      (singleUser) =>
-        singleUser.email === loginInput.email &&
-        singleUser.password === loginInput.password
-    ) as AuthUser;
+    const user = await prisma.users.findUnique({
+      where: {
+        email: loginInput.email,
+      },
+    });
 
-    if (user === undefined) throw new Error();
+    if (user === null) throw new Error();
+
+    const passwordHash = crypto
+      .createHash("sha256", "secret")
+      .update(loginInput.password)
+      .digest("hex");
+
+    if (passwordHash !== user.password) throw new Error();
 
     const { id, email, firstName, lastName, bio, role } = user;
 

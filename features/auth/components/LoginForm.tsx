@@ -7,7 +7,7 @@ import { useAuth } from "@/lib/auth";
 
 const schema = z.object({
   email: z.string().min(1, "Required"),
-  password: z.string().min(1, "Required"),
+  password: z.string().min(6, "Required"),
 });
 
 type LoginValues = {

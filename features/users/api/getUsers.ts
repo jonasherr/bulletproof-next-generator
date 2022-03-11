@@ -1,12 +1,13 @@
 import { useQuery } from "react-query";
-
-import { axios } from "@/lib/axios";
 import { ExtractFnReturnType, QueryConfig } from "@/lib/react-query";
 
 import { User } from "../types";
+import { supabase } from "@/lib/initSupabase";
 
-export const getUsers = (): Promise<User[]> => {
-  return axios.get(`/api/users`);
+export const getUsers = async (): Promise<User[]> => {
+  const response = await supabase.from<User>("user").select("*");
+
+  return response.data ?? [];
 };
 
 type QueryFnType = typeof getUsers;

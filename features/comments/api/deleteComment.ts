@@ -1,13 +1,17 @@
 import { useMutation } from "react-query";
-
-import { axios } from "@/lib/axios";
 import { MutationConfig, queryClient } from "@/lib/react-query";
 import { useNotificationStore } from "@/stores/notifications";
 
 import { Comment } from "../types";
+import { supabase } from "@/lib/initSupabase";
 
-export const deleteComment = ({ commentId }: { commentId: string }) => {
-  return axios.delete(`/api/comments/delete/${commentId}`);
+export const deleteComment = async ({ commentId }: { commentId: string }) => {
+  const { data } = await supabase
+    .from<Comment>("comment")
+    .delete()
+    .match({ id: commentId });
+
+  return data;
 };
 
 type UseDeleteCommentOptions = {

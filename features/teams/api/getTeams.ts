@@ -1,12 +1,13 @@
-import { useQuery } from 'react-query';
+import { useQuery } from "react-query";
+import { ExtractFnReturnType, QueryConfig } from "@/lib/react-query";
 
-import { axios } from '@/lib/axios';
-import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query';
+import { Team } from "../types";
+import { supabase } from "@/lib/initSupabase";
 
-import { Team } from '../types';
+export const getTeams = async (): Promise<Team[]> => {
+  const response = await supabase.from<Team>("team").select("*");
 
-export const getTeams = (): Promise<Team[]> => {
-  return axios.get('/teams');
+  return response.data ?? [];
 };
 
 type QueryFnType = typeof getTeams;
@@ -18,7 +19,7 @@ type UseTeamsOptions = {
 export const useTeams = ({ config = {} }: UseTeamsOptions = {}) => {
   return useQuery<ExtractFnReturnType<QueryFnType>>({
     ...config,
-    queryKey: ['teams'],
+    queryKey: ["teams"],
     queryFn: () => getTeams(),
   });
 };

@@ -1,10 +1,9 @@
 import { useMutation } from "react-query";
-
-import { axios } from "@/lib/axios";
 import { MutationConfig, queryClient } from "@/lib/react-query";
 import { useNotificationStore } from "@/stores/notifications";
 
 import { Discussion } from "../types";
+import { supabase } from "@/lib/initSupabase";
 
 export type CreateDiscussionDTO = {
   data: {
@@ -13,10 +12,16 @@ export type CreateDiscussionDTO = {
   };
 };
 
-export const createDiscussion = ({
+export const createDiscussion = async ({
   data,
 }: CreateDiscussionDTO): Promise<Discussion> => {
-  return axios.post(`/api/discussions/create`, data);
+  const { data: createdDiscussion } = await supabase
+    .from<Discussion>("discussion")
+    .insert([{ ...data, teamId: "abc" }]);
+
+  if (createdDiscussion === null) throw Error();
+
+  return createdDiscussion[0];
 };
 
 type UseCreateDiscussionOptions = {

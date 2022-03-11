@@ -1,17 +1,21 @@
 import { useMutation } from "react-query";
-
-import { axios } from "@/lib/axios";
 import { MutationConfig, queryClient } from "@/lib/react-query";
 import { useNotificationStore } from "@/stores/notifications";
 
 import { Discussion } from "../types";
+import { supabase } from "@/lib/initSupabase";
 
-export const deleteDiscussion = ({
+export const deleteDiscussion = async ({
   discussionId,
 }: {
   discussionId: string;
 }) => {
-  return axios.delete(`/api/discussions/delete/${discussionId}`);
+  const { data } = await supabase
+    .from<Discussion>("discussion")
+    .delete()
+    .match({ id: discussionId });
+
+  return data;
 };
 
 type UseDeleteDiscussionOptions = {

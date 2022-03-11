@@ -1,10 +1,9 @@
 import { useMutation } from "react-query";
-
-import { axios } from "@/lib/axios";
 import { MutationConfig, queryClient } from "@/lib/react-query";
 import { useNotificationStore } from "@/stores/notifications";
 
 import { Comment } from "../types";
+import { supabase } from "@/lib/initSupabase";
 
 export type CreateCommentDTO = {
   data: {
@@ -13,8 +12,16 @@ export type CreateCommentDTO = {
   };
 };
 
-export const createComment = ({ data }: CreateCommentDTO): Promise<Comment> => {
-  return axios.post("/api/comments/create", data);
+export const createComment = async ({
+  data,
+}: CreateCommentDTO): Promise<Comment> => {
+  const { data: createdComment } = await supabase
+    .from<Comment>("comment")
+    .insert([{ ...data, authorId: "abc" }]);
+
+  if (createdComment === null) throw Error();
+
+  return createdComment[0];
 };
 
 type UseCreateCommentOptions = {

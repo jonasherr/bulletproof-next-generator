@@ -1,10 +1,9 @@
 import { useMutation } from "react-query";
-
-import { axios } from "@/lib/axios";
 import { MutationConfig, queryClient } from "@/lib/react-query";
 import { useNotificationStore } from "@/stores/notifications";
 
 import { Discussion } from "../types";
+import { supabase } from "@/lib/initSupabase";
 
 export type UpdateDiscussionDTO = {
   data: {
@@ -14,11 +13,18 @@ export type UpdateDiscussionDTO = {
   discussionId: string;
 };
 
-export const updateDiscussion = ({
+export const updateDiscussion = async ({
   data,
   discussionId,
 }: UpdateDiscussionDTO): Promise<Discussion> => {
-  return axios.patch(`/api/discussions/update/${discussionId}`, data);
+  const { data: updatedDiscussion } = await supabase
+    .from<Discussion>("discussion")
+    .update(data)
+    .match({ id: discussionId });
+
+  if (updatedDiscussion === null) throw Error();
+
+  return updatedDiscussion[0];
 };
 
 type UseUpdateDiscussionOptions = {

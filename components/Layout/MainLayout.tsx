@@ -69,7 +69,7 @@ const UserNavigation = () => {
   const { logout } = useAuth();
 
   const userNavigation = [
-    { name: "Your Profile", to: "./profile" },
+    { name: "Your Profile", to: "/users/profile" },
     {
       name: "Sign out",
       to: "",

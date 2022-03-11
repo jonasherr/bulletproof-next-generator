@@ -1,8 +1,8 @@
-import { useMutation } from 'react-query';
-
-import { axios } from '@/lib/axios';
-import { MutationConfig } from '@/lib/react-query';
-import { useNotificationStore } from '@/stores/notifications';
+import { useMutation } from "react-query";
+import { MutationConfig } from "@/lib/react-query";
+import { useNotificationStore } from "@/stores/notifications";
+import { supabase } from "@/lib/initSupabase";
+import { Team } from "@/features/teams";
 
 export type UpdateTeamDTO = {
   teamId: string;
@@ -12,8 +12,15 @@ export type UpdateTeamDTO = {
   };
 };
 
-export const updateTeam = ({ teamId, data }: UpdateTeamDTO) => {
-  return axios.patch(`/teams/${teamId}`, data);
+export const updateTeam = async ({ teamId, data }: UpdateTeamDTO) => {
+  const { data: updatedTeam } = await supabase
+    .from<Team>("team")
+    .update(data)
+    .match({ id: teamId });
+
+  if (updatedTeam === null) throw Error();
+
+  return updatedTeam[0];
 };
 
 type UseUpdateTeamOptions = {
@@ -28,8 +35,8 @@ export const useUpdateTeam = ({ config }: UseUpdateTeamOptions = {}) => {
     mutationFn: updateTeam,
     onSuccess: () => {
       addNotification({
-        type: 'success',
-        title: 'Profile Updated',
+        type: "success",
+        title: "Profile Updated",
       });
     },
   });

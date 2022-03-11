@@ -1,20 +1,20 @@
 import { useQuery } from "react-query";
-
-import { axios } from "@/lib/axios";
 import { ExtractFnReturnType, QueryConfig } from "@/lib/react-query";
 
 import { Comment } from "../types";
+import { supabase } from "@/lib/initSupabase";
 
-export const getComments = ({
+export const getComments = async ({
   discussionId,
 }: {
   discussionId: string;
 }): Promise<Comment[]> => {
-  return axios.get(`/api/comments`, {
-    params: {
-      discussionId,
-    },
-  });
+  const response = await supabase
+    .from<Comment>("comment")
+    .select("*")
+    .eq("discussionId", discussionId);
+
+  return response.data ?? [];
 };
 
 type QueryFnType = typeof getComments;

@@ -14,11 +14,11 @@ type RoleTypes = keyof typeof ROLES;
 
 export const POLICIES = {
   "comment:delete": (user: User, comment: Comment) => {
-    if (user.role === "ADMIN") {
+    if (user.role === ROLES.ADMIN) {
       return true;
     }
 
-    return user.role === "USER" && comment.authorId === user.id;
+    return user.role === ROLES.USER && comment.authorId === user.id;
   },
 };
 
