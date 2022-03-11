@@ -11,6 +11,7 @@ import {
   UserResponse,
 } from "@/features/auth";
 import storage from "@/utils/storage";
+import { supabase } from "@/lib/initSupabase";
 
 async function handleUserResponse(data: UserResponse) {
   const { jwt, user } = data;
@@ -38,6 +39,7 @@ async function registerFn(data: RegisterCredentialsDTO) {
 async function logoutFn() {
   storage.clearToken();
   window.location.assign(window.location.origin as unknown as string);
+  await supabase.auth.signOut();
 }
 
 const authConfig = {

@@ -1,6 +1,5 @@
-import { UserResponse } from "../types";
+import { AuthUser, UserResponse } from "../types";
 import { supabase } from "@/lib/initSupabase";
-import { User } from "@/features/users";
 import { ROLES } from "@/lib/authorization";
 
 export type RegisterCredentialsDTO = {
@@ -8,6 +7,7 @@ export type RegisterCredentialsDTO = {
   password: string;
   firstName: string;
   lastName: string;
+  teamId?: string;
 };
 
 export const registerWithEmailAndPassword = async (
@@ -20,14 +20,14 @@ export const registerWithEmailAndPassword = async (
 
   if (error !== null) throw Error();
 
-  const { data: user } = await supabase.from<User>("users").insert([
+  const { data: user } = await supabase.from<AuthUser>("users").insert([
     {
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
       role: ROLES.ADMIN,
-      teamId: "1",
       bio: "",
+      teamId: data.teamId,
     },
   ]);
 

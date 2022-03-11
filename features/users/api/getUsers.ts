@@ -5,7 +5,7 @@ import { User } from "../types";
 import { supabase } from "@/lib/initSupabase";
 
 export const getUsers = async (): Promise<User[]> => {
-  const response = await supabase.from<User>("user").select("*");
+  const response = await supabase.from<User>("users").select("*");
 
   return response.data ?? [];
 };

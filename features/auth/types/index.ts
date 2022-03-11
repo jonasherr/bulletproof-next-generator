@@ -7,6 +7,7 @@ export type AuthUser = {
   lastName: string;
   bio: string;
   role: ROLES;
+  teamId?: string;
 };
 
 export type UserResponse = {

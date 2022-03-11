@@ -1,9 +1,10 @@
-import { useMutation } from 'react-query';
+import { useMutation } from "react-query";
 
-import { useAuth } from '@/lib/auth';
-import { axios } from '@/lib/axios';
-import { MutationConfig } from '@/lib/react-query';
-import { useNotificationStore } from '@/stores/notifications';
+import { useAuth } from "@/lib/auth";
+import { MutationConfig } from "@/lib/react-query";
+import { useNotificationStore } from "@/stores/notifications";
+import { supabase } from "@/lib/initSupabase";
+import { User } from "@/features/users";
 
 export type UpdateProfileDTO = {
   data: {
@@ -14,8 +15,29 @@ export type UpdateProfileDTO = {
   };
 };
 
-export const updateProfile = ({ data }: UpdateProfileDTO) => {
-  return axios.patch(`/users/profile`, data);
+export const updateProfile = async ({ data }: UpdateProfileDTO) => {
+  const userResponse = await supabase.auth.user();
+
+  if (userResponse === null) throw Error();
+
+  const { error, data: user } = await supabase
+    .from<User>("users")
+    .update(data)
+    .eq("email", userResponse.email as string);
+
+  if (error !== null) throw Error();
+
+  if (userResponse.email !== data.email) {
+    const { error: emailError } = await supabase.auth.api.updateUserById(
+      userResponse.id,
+      {
+        email: data.email,
+      }
+    );
+
+    if (emailError !== null) throw Error;
+  }
+  return user;
 };
 
 type UseUpdateProfileOptions = {
@@ -28,8 +50,8 @@ export const useUpdateProfile = ({ config }: UseUpdateProfileOptions = {}) => {
   return useMutation({
     onSuccess: () => {
       addNotification({
-        type: 'success',
-        title: 'User Updated',
+        type: "success",
+        title: "User Updated",
       });
       refetchUser();
     },

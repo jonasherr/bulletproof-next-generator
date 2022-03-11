@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^2.8.8",
     "@prisma/client": "^3.10.0",
     "@storybook/react": "^6.4.19",
+    "@supabase/supabase-auth-helpers": "^1.2.2",
     "@supabase/supabase-js": "^1.31.1",
     "@supabase/ui": "^0.36.4",
     "axios": "^0.26.0",

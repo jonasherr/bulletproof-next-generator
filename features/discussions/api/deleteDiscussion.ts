@@ -10,10 +10,19 @@ export const deleteDiscussion = async ({
 }: {
   discussionId: string;
 }) => {
-  const { data } = await supabase
+  const { error: deleteCommentError } = await supabase
+    .from<Comment>("comment")
+    .delete()
+    .match({ discussionId });
+
+  if (deleteCommentError !== null) throw Error();
+
+  const { data, error } = await supabase
     .from<Discussion>("discussion")
     .delete()
     .match({ id: discussionId });
+
+  if (error !== null) throw Error();
 
   return data;
 };
