@@ -8,36 +8,22 @@ import {
   loginWithEmailAndPassword,
   RegisterCredentialsDTO,
   registerWithEmailAndPassword,
-  UserResponse,
 } from "@/features/auth";
-import storage from "@/utils/storage";
 import { supabase } from "@/lib/initSupabase";
 
-async function handleUserResponse(data: UserResponse) {
-  const { jwt, user } = data;
-  storage.setToken(jwt);
-  return user;
-}
-
 async function loadUser() {
-  if (storage.getToken()) {
-    return await getUser();
-  }
-  return null;
+  return await getUser();
 }
 
 async function loginFn(data: LoginCredentialsDTO) {
-  const response = await loginWithEmailAndPassword(data);
-  return await handleUserResponse(response);
+  return await loginWithEmailAndPassword(data);
 }
 
 async function registerFn(data: RegisterCredentialsDTO) {
-  const response = await registerWithEmailAndPassword(data);
-  return await handleUserResponse(response);
+  return await registerWithEmailAndPassword(data);
 }
 
 async function logoutFn() {
-  storage.clearToken();
   window.location.assign(window.location.origin as unknown as string);
   await supabase.auth.signOut();
 }

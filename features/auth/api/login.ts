@@ -1,5 +1,6 @@
-import { AuthUser, UserResponse } from "../types";
+import { AuthUser } from "../types";
 import { supabase } from "@/lib/initSupabase";
+import { useNotificationStore } from "@/stores/notifications";
 
 export type LoginCredentialsDTO = {
   email: string;
@@ -8,21 +9,30 @@ export type LoginCredentialsDTO = {
 
 export const loginWithEmailAndPassword = async (
   data: LoginCredentialsDTO
-): Promise<UserResponse> => {
-  const { error } = await supabase.auth.signIn(data);
+): Promise<AuthUser> => {
+  try {
+    const { error } = await supabase.auth.signIn(data);
 
-  if (error !== null) throw Error();
+    if (error !== null) throw Error();
 
-  const session = supabase.auth.session();
+    const session = supabase.auth.session();
 
-  if (session === null) throw Error();
+    if (session === null) throw Error();
 
-  const { data: userData } = await supabase
-    .from<AuthUser>("users")
-    .select()
-    .eq("email", data.email);
+    const { data: userData } = await supabase
+      .from<AuthUser>("users")
+      .select()
+      .eq("email", data.email);
 
-  if (userData === null) throw Error();
+    if (userData === null) throw Error();
 
-  return { jwt: session.access_token, user: userData[0] };
+    return userData[0];
+  } catch {
+    useNotificationStore.getState().addNotification({
+      type: "error",
+      title: "Invalid credentials",
+      message: "Please make sure to enter valid credentials.",
+    });
+    return Promise.reject("Invalid credentials");
+  }
 };
