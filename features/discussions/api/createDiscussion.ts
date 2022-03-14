@@ -17,7 +17,7 @@ export const createDiscussion = async ({
 }: CreateDiscussionDTO): Promise<Discussion> => {
   const { data: createdDiscussion } = await supabase
     .from<Discussion>("discussion")
-    .insert([{ ...data, teamId: "abc" }]);
+    .insert([data]);
 
   if (createdDiscussion === null) throw Error();
 

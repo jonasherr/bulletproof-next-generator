@@ -8,7 +8,6 @@ export type RegisterCredentialsDTO = {
   password: string;
   firstName: string;
   lastName: string;
-  teamId?: string;
 };
 
 export const registerWithEmailAndPassword = async (
@@ -29,7 +28,6 @@ export const registerWithEmailAndPassword = async (
         email: data.email,
         role: ROLES.ADMIN,
         bio: "",
-        teamId: data.teamId,
       },
     ]);
 
