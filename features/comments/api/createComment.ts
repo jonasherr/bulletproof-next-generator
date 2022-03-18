@@ -16,7 +16,7 @@ export const createComment = async ({
   data,
 }: CreateCommentDTO): Promise<Comment> => {
   const { data: createdComment } = await supabase
-    .from<Comment>("comment")
+    .from<Comment>("comments")
     .insert([{ ...data, authorId: "abc" }]);
 
   if (createdComment === null) throw Error();

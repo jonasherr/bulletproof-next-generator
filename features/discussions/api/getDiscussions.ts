@@ -5,7 +5,7 @@ import { Discussion } from "../types";
 import { supabase } from "@/lib/initSupabase";
 
 export const getDiscussions = async (): Promise<Discussion[]> => {
-  const response = await supabase.from<Discussion>("discussion").select("*");
+  const response = await supabase.from<Discussion>("discussions").select("*");
 
   return response.data ?? [];
 };

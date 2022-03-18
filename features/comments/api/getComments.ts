@@ -10,7 +10,7 @@ export const getComments = async ({
   discussionId: string;
 }): Promise<Comment[]> => {
   const response = await supabase
-    .from<Comment>("comment")
+    .from<Comment>("comments")
     .select("*")
     .eq("discussionId", discussionId);
 

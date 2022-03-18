@@ -18,7 +18,7 @@ export const updateDiscussion = async ({
   discussionId,
 }: UpdateDiscussionDTO): Promise<Discussion> => {
   const { data: updatedDiscussion } = await supabase
-    .from<Discussion>("discussion")
+    .from<Discussion>("discussions")
     .update(data)
     .match({ id: discussionId });
 

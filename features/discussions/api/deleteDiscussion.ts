@@ -11,14 +11,14 @@ export const deleteDiscussion = async ({
   discussionId: number;
 }) => {
   const { error: deleteCommentError } = await supabase
-    .from<Comment>("comment")
+    .from<Comment>("comments")
     .delete()
     .match({ discussionId });
 
   if (deleteCommentError !== null) throw Error();
 
   const { data, error } = await supabase
-    .from<Discussion>("discussion")
+    .from<Discussion>("discussions")
     .delete()
     .match({ id: discussionId });
 

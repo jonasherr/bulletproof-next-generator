@@ -210,6 +210,102 @@ export interface paths {
       };
     };
   };
+  "/suppen": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.suppen.id"];
+          created_at?: parameters["rowFilter.suppen.created_at"];
+          title?: parameters["rowFilter.suppen.title"];
+          body?: parameters["rowFilter.suppen.body"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["suppen"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** suppen */
+          suppen?: definitions["suppen"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.suppen.id"];
+          created_at?: parameters["rowFilter.suppen.created_at"];
+          title?: parameters["rowFilter.suppen.title"];
+          body?: parameters["rowFilter.suppen.body"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.suppen.id"];
+          created_at?: parameters["rowFilter.suppen.created_at"];
+          title?: parameters["rowFilter.suppen.title"];
+          body?: parameters["rowFilter.suppen.body"];
+        };
+        body: {
+          /** suppen */
+          suppen?: definitions["suppen"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   "/team": {
     get: {
       parameters: {
@@ -459,6 +555,23 @@ export interface definitions {
     /** Format: character varying */
     teamId?: string;
   };
+  suppen: {
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at: string;
+    /** Format: character varying */
+    title: string;
+    /** Format: text */
+    body?: string;
+  };
   team: {
     /**
      * Format: bigint
@@ -508,11 +621,20 @@ export interface definitions {
 }
 
 export interface parameters {
-  /** @description Preference */
+  /**
+   * @description Preference
+   * @enum {string}
+   */
   preferParams: "params=single-object";
-  /** @description Preference */
+  /**
+   * @description Preference
+   * @enum {string}
+   */
   preferReturn: "return=representation" | "return=minimal" | "return=none";
-  /** @description Preference */
+  /**
+   * @description Preference
+   * @enum {string}
+   */
   preferCount: "count=none";
   /** @description Filtering Columns */
   select: string;
@@ -555,6 +677,16 @@ export interface parameters {
   "rowFilter.discussion.body": string;
   /** Format: character varying */
   "rowFilter.discussion.teamId": string;
+  /** @description suppen */
+  "body.suppen": definitions["suppen"];
+  /** Format: bigint */
+  "rowFilter.suppen.id": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.suppen.created_at": string;
+  /** Format: character varying */
+  "rowFilter.suppen.title": string;
+  /** Format: text */
+  "rowFilter.suppen.body": string;
   /** @description team */
   "body.team": definitions["team"];
   /** Format: bigint */

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   description: "Add new Component",
   prompts: [
     {

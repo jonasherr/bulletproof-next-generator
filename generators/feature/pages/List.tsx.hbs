@@ -1,17 +1,21 @@
-import { ContentLayout } from '@/components/Layout';
+import { ContentLayout, MainLayout } from '@/components/Layout';
 
 import { Create{{properCase name}} } from '@/features/{{camelCase name}}/components/Create{{properCase name}}';
 import { {{properCase name}}sList } from '@/features/{{camelCase name}}/components/{{properCase name}}sList';
 
-export const {{properCase name}}s = () => {
-return (
-<ContentLayout title="{{properCase name}}s">
-    <div className="flex justify-end">
-        <Create{{properCase name}} />
-    </div>
-    <div className="mt-4">
-        <{{properCase name}}sList/>
-    </div>
-</ContentLayout>
-);
+const {{properCase name}}s = () => {
+    return (
+        <MainLayout>
+            <ContentLayout title="{{properCase name}}s">
+                <div className="flex justify-end">
+                    <Create{{properCase name}} />
+                </div>
+                <div className="mt-4">
+                    <{{properCase name}}sList/>
+                </div>
+            </ContentLayout>
+        </MainLayout>
+    );
 };
+
+export default {{properCase name}}s

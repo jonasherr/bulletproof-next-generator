@@ -10,7 +10,7 @@ export const getDiscussion = async ({
   discussionId: string;
 }): Promise<Discussion | undefined> => {
   const { data: discussion } = await supabase
-    .from<Discussion>("discussion")
+    .from<Discussion>("discussions")
     .select()
     .eq("id", discussionId);
 

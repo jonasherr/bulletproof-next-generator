@@ -1,13 +1,11 @@
-const { log } = require("console");
-
-module.exports = {
+export default {
   description: "Add new Feature",
   prompts: [
-    {
-      type: "input",
-      name: "name",
-      message: "feature name",
-    },
+    /*{
+                                                                                          type: "input",
+                                                                                          name: "name",
+                                                                                          message: "feature name",
+                                                                                        },*/
     {
       type: "list",
       name: "renderingChoice",
@@ -15,27 +13,27 @@ module.exports = {
       choices: ["client side", "server side", "static"],
     },
     /*    {
-                                  type: "editor",
-                                  name: "interface",
-                                  message: `TypeScript type for feature
-                                  Only provide key value pairs for the type like so:
-                                  title: string;
-                                  count: number;
-                                  `,
-                                  when: ({ typeChoice }) => typeChoice === "create new type",
-                                },
-                                {
-                                  type: "input",
-                                  name: "supabase-url",
-                                  message: "Please provide the supabase url of your project",
-                                  when: ({ typeChoice }) => typeChoice === "supabase project",
-                                },
-                                {
-                                  type: "input",
-                                  name: "supabase-public-anon-key",
-                                  message: "Please provide the supabase public anon key of your project",
-                                  when: ({ typeChoice }) => typeChoice === "supabase project",
-                                },*/
+                                                                                                                                  type: "editor",
+                                                                                                                                  name: "interface",
+                                                                                                                                  message: `TypeScript type for feature
+                                                                                                                                  Only provide key value pairs for the type like so:
+                                                                                                                                  title: string;
+                                                                                                                                  count: number;
+                                                                                                                                  `,
+                                                                                                                                  when: ({ typeChoice }) => typeChoice === "create new type",
+                                                                                                                                },
+                                                                                                                                {
+                                                                                                                                  type: "input",
+                                                                                                                                  name: "supabase-url",
+                                                                                                                                  message: "Please provide the supabase url of your project",
+                                                                                                                                  when: ({ typeChoice }) => typeChoice === "supabase project",
+                                                                                                                                },
+                                                                                                                                {
+                                                                                                                                  type: "input",
+                                                                                                                                  name: "supabase-public-anon-key",
+                                                                                                                                  message: "Please provide the supabase public anon key of your project",
+                                                                                                                                  when: ({ typeChoice }) => typeChoice === "supabase project",
+                                                                                                                                },*/
   ],
   actions: [
     {
@@ -109,7 +107,7 @@ module.exports = {
       path: "components/Layout/MainLayout.tsx",
       pattern: /{ name: ".*", to: ".*", icon: .* }/,
       separator: ",\n    ",
-      template: `{ name: "{{titleCase name}}", to: "./{{dashCase name}}", icon: FolderIcon }`,
+      template: `{ name: "{{titleCase name}}", to: "/{{dashCase name}}", icon: FolderIcon }`,
     },
   ],
 };

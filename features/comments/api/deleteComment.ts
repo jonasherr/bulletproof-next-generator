@@ -7,7 +7,7 @@ import { supabase } from "@/lib/initSupabase";
 
 export const deleteComment = async ({ commentId }: { commentId: string }) => {
   const { data } = await supabase
-    .from<Comment>("comment")
+    .from<Comment>("comments")
     .delete()
     .match({ id: commentId });
 
