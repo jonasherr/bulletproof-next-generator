@@ -8,7 +8,7 @@ import { supabase } from "@/lib/initSupabase";
 export const deleteDiscussion = async ({
   discussionId,
 }: {
-  discussionId: string;
+  discussionId: number;
 }) => {
   const { error: deleteCommentError } = await supabase
     .from<Comment>("comment")

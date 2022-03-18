@@ -2,7 +2,7 @@ import createDOMPurify from "dompurify";
 import { marked } from "marked";
 
 export type MDPreviewProps = {
-  value: string;
+  value?: string;
 };
 
 export const MDPreview = ({ value = "" }: MDPreviewProps) => {

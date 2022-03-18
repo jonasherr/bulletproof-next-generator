@@ -1,0 +1,50 @@
+import { CustomLink, Spinner, Table } from "@/components/Elements";
+import { formatDate } from "@/utils/format";
+
+import { use{{properCase name}}s } from "../api/get{{properCase name}}s";
+import { {{properCase name}}Type } from "../types";
+
+import { Delete{{properCase name}} } from "./Delete{{properCase name}}";
+
+export const {{properCase name}}sList = () => {
+  const {{camelCase name}}sQuery = use{{properCase name}}s();
+
+  if ({{camelCase name}}sQuery.isLoading) {
+    return (
+      <div className="w-full h-48 flex justify-center items-center">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
+
+  if (!{{camelCase name}}sQuery.data) return null;
+
+  return (
+    <Table<{{properCase name}}Type>
+      data={ {{camelCase name}}sQuery.data }
+      columns={[
+        {
+          title: "Created At",
+          field: "createdAt",
+          Cell({ entry: { createdAt } }) {
+            return <span>{formatDate(createdAt)}</span>;
+          },
+        },
+        {
+          title: "",
+          field: "id",
+          Cell({ entry: { id } }) {
+            return <CustomLink href={`/{{dashCase name}}s/${id}`}>View</CustomLink>;
+          },
+        },
+        {
+          title: "",
+          field: "id",
+          Cell({ entry: { id } }) {
+            return <Delete{{properCase name}} id={id} />;
+          },
+        },
+      ]}
+    />
+  );
+};

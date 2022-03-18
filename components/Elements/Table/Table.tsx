@@ -1,5 +1,5 @@
-import { ArchiveIcon } from '@heroicons/react/outline';
-import * as React from 'react';
+import { ArchiveIcon } from "@heroicons/react/outline";
+import * as React from "react";
 
 type TableColumn<Entry> = {
   title: string;
@@ -12,7 +12,10 @@ export type TableProps<Entry> = {
   columns: TableColumn<Entry>[];
 };
 
-export const Table = <Entry extends { id: string }>({ data, columns }: TableProps<Entry>) => {
+export const Table = <Entry extends { id: number }>({
+  data,
+  columns,
+}: TableProps<Entry>) => {
   if (!data?.length) {
     return (
       <div className="bg-white text-gray-500 h-80 flex justify-center items-center flex-col">
@@ -44,7 +47,9 @@ export const Table = <Entry extends { id: string }>({ data, columns }: TableProp
                 {data.map((entry, entryIndex) => (
                   <tr
                     key={entry?.id || entryIndex}
-                    className={entryIndex % 2 === 0 ? 'bg-white' : 'bg-gray-100'}
+                    className={
+                      entryIndex % 2 === 0 ? "bg-white" : "bg-gray-100"
+                    }
                   >
                     {columns.map(({ Cell, field, title }, columnIndex) => (
                       <td
