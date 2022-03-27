@@ -12,15 +12,15 @@ export interface paths {
       };
     };
   };
-  "/comment": {
+  "/comments": {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.comment.id"];
-          createdAt?: parameters["rowFilter.comment.createdAt"];
-          body?: parameters["rowFilter.comment.body"];
-          authorId?: parameters["rowFilter.comment.authorId"];
-          discussionId?: parameters["rowFilter.comment.discussionId"];
+          id?: parameters["rowFilter.comments.id"];
+          createdAt?: parameters["rowFilter.comments.createdAt"];
+          body?: parameters["rowFilter.comments.body"];
+          authorId?: parameters["rowFilter.comments.authorId"];
+          discussionId?: parameters["rowFilter.comments.discussionId"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -42,7 +42,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["comment"][];
+          schema: definitions["comments"][];
         };
         /** Partial Content */
         206: unknown;
@@ -51,8 +51,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** comment */
-          comment?: definitions["comment"];
+          /** comments */
+          comments?: definitions["comments"];
         };
         query: {
           /** Filtering Columns */
@@ -71,11 +71,11 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.comment.id"];
-          createdAt?: parameters["rowFilter.comment.createdAt"];
-          body?: parameters["rowFilter.comment.body"];
-          authorId?: parameters["rowFilter.comment.authorId"];
-          discussionId?: parameters["rowFilter.comment.discussionId"];
+          id?: parameters["rowFilter.comments.id"];
+          createdAt?: parameters["rowFilter.comments.createdAt"];
+          body?: parameters["rowFilter.comments.body"];
+          authorId?: parameters["rowFilter.comments.authorId"];
+          discussionId?: parameters["rowFilter.comments.discussionId"];
         };
         header: {
           /** Preference */
@@ -90,15 +90,15 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.comment.id"];
-          createdAt?: parameters["rowFilter.comment.createdAt"];
-          body?: parameters["rowFilter.comment.body"];
-          authorId?: parameters["rowFilter.comment.authorId"];
-          discussionId?: parameters["rowFilter.comment.discussionId"];
+          id?: parameters["rowFilter.comments.id"];
+          createdAt?: parameters["rowFilter.comments.createdAt"];
+          body?: parameters["rowFilter.comments.body"];
+          authorId?: parameters["rowFilter.comments.authorId"];
+          discussionId?: parameters["rowFilter.comments.discussionId"];
         };
         body: {
-          /** comment */
-          comment?: definitions["comment"];
+          /** comments */
+          comments?: definitions["comments"];
         };
         header: {
           /** Preference */
@@ -111,15 +111,15 @@ export interface paths {
       };
     };
   };
-  "/discussion": {
+  "/discussions": {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.discussion.id"];
-          createdAt?: parameters["rowFilter.discussion.createdAt"];
-          title?: parameters["rowFilter.discussion.title"];
-          body?: parameters["rowFilter.discussion.body"];
-          teamId?: parameters["rowFilter.discussion.teamId"];
+          id?: parameters["rowFilter.discussions.id"];
+          createdAt?: parameters["rowFilter.discussions.createdAt"];
+          title?: parameters["rowFilter.discussions.title"];
+          body?: parameters["rowFilter.discussions.body"];
+          teamId?: parameters["rowFilter.discussions.teamId"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -141,7 +141,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["discussion"][];
+          schema: definitions["discussions"][];
         };
         /** Partial Content */
         206: unknown;
@@ -150,8 +150,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** discussion */
-          discussion?: definitions["discussion"];
+          /** discussions */
+          discussions?: definitions["discussions"];
         };
         query: {
           /** Filtering Columns */
@@ -170,11 +170,11 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.discussion.id"];
-          createdAt?: parameters["rowFilter.discussion.createdAt"];
-          title?: parameters["rowFilter.discussion.title"];
-          body?: parameters["rowFilter.discussion.body"];
-          teamId?: parameters["rowFilter.discussion.teamId"];
+          id?: parameters["rowFilter.discussions.id"];
+          createdAt?: parameters["rowFilter.discussions.createdAt"];
+          title?: parameters["rowFilter.discussions.title"];
+          body?: parameters["rowFilter.discussions.body"];
+          teamId?: parameters["rowFilter.discussions.teamId"];
         };
         header: {
           /** Preference */
@@ -189,15 +189,15 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.discussion.id"];
-          createdAt?: parameters["rowFilter.discussion.createdAt"];
-          title?: parameters["rowFilter.discussion.title"];
-          body?: parameters["rowFilter.discussion.body"];
-          teamId?: parameters["rowFilter.discussion.teamId"];
+          id?: parameters["rowFilter.discussions.id"];
+          createdAt?: parameters["rowFilter.discussions.createdAt"];
+          title?: parameters["rowFilter.discussions.title"];
+          body?: parameters["rowFilter.discussions.body"];
+          teamId?: parameters["rowFilter.discussions.teamId"];
         };
         body: {
-          /** discussion */
-          discussion?: definitions["discussion"];
+          /** discussions */
+          discussions?: definitions["discussions"];
         };
         header: {
           /** Preference */
@@ -306,102 +306,6 @@ export interface paths {
       };
     };
   };
-  "/team": {
-    get: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.team.id"];
-          createdAt?: parameters["rowFilter.team.createdAt"];
-          name?: parameters["rowFilter.team.name"];
-          description?: parameters["rowFilter.team.description"];
-          /** Filtering Columns */
-          select?: parameters["select"];
-          /** Ordering */
-          order?: parameters["order"];
-          /** Limiting and Pagination */
-          offset?: parameters["offset"];
-          /** Limiting and Pagination */
-          limit?: parameters["limit"];
-        };
-        header: {
-          /** Limiting and Pagination */
-          Range?: parameters["range"];
-          /** Limiting and Pagination */
-          "Range-Unit"?: parameters["rangeUnit"];
-          /** Preference */
-          Prefer?: parameters["preferCount"];
-        };
-      };
-      responses: {
-        /** OK */
-        200: {
-          schema: definitions["team"][];
-        };
-        /** Partial Content */
-        206: unknown;
-      };
-    };
-    post: {
-      parameters: {
-        body: {
-          /** team */
-          team?: definitions["team"];
-        };
-        query: {
-          /** Filtering Columns */
-          select?: parameters["select"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** Created */
-        201: unknown;
-      };
-    };
-    delete: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.team.id"];
-          createdAt?: parameters["rowFilter.team.createdAt"];
-          name?: parameters["rowFilter.team.name"];
-          description?: parameters["rowFilter.team.description"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-    patch: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.team.id"];
-          createdAt?: parameters["rowFilter.team.createdAt"];
-          name?: parameters["rowFilter.team.name"];
-          description?: parameters["rowFilter.team.description"];
-        };
-        body: {
-          /** team */
-          team?: definitions["team"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-  };
   "/users": {
     get: {
       parameters: {
@@ -411,7 +315,6 @@ export interface paths {
           firstName?: parameters["rowFilter.users.firstName"];
           lastName?: parameters["rowFilter.users.lastName"];
           role?: parameters["rowFilter.users.role"];
-          teamId?: parameters["rowFilter.users.teamId"];
           bio?: parameters["rowFilter.users.bio"];
           email?: parameters["rowFilter.users.email"];
           /** Filtering Columns */
@@ -469,7 +372,6 @@ export interface paths {
           firstName?: parameters["rowFilter.users.firstName"];
           lastName?: parameters["rowFilter.users.lastName"];
           role?: parameters["rowFilter.users.role"];
-          teamId?: parameters["rowFilter.users.teamId"];
           bio?: parameters["rowFilter.users.bio"];
           email?: parameters["rowFilter.users.email"];
         };
@@ -491,7 +393,6 @@ export interface paths {
           firstName?: parameters["rowFilter.users.firstName"];
           lastName?: parameters["rowFilter.users.lastName"];
           role?: parameters["rowFilter.users.role"];
-          teamId?: parameters["rowFilter.users.teamId"];
           bio?: parameters["rowFilter.users.bio"];
           email?: parameters["rowFilter.users.email"];
         };
@@ -513,7 +414,7 @@ export interface paths {
 }
 
 export interface definitions {
-  comment: {
+  comments: {
     /**
      * Format: bigint
      * @description Note:
@@ -532,11 +433,11 @@ export interface definitions {
     /**
      * Format: bigint
      * @description Note:
-     * This is a Foreign Key to `discussion.id`.<fk table='discussion' column='id'/>
+     * This is a Foreign Key to `discussions.id`.<fk table='discussions' column='id'/>
      */
     discussionId?: number;
   };
-  discussion: {
+  discussions: {
     /**
      * Format: bigint
      * @description Note:
@@ -572,23 +473,6 @@ export interface definitions {
     /** Format: text */
     body?: string;
   };
-  team: {
-    /**
-     * Format: bigint
-     * @description Note:
-     * This is a Primary Key.<pk/>
-     */
-    id: number;
-    /**
-     * Format: timestamp with time zone
-     * @default now()
-     */
-    createdAt?: string;
-    /** Format: character varying */
-    name?: string;
-    /** Format: text */
-    description?: string;
-  };
   users: {
     /**
      * Format: bigint
@@ -607,12 +491,6 @@ export interface definitions {
     lastName: string;
     /** Format: character varying */
     role: string;
-    /**
-     * Format: bigint
-     * @description Note:
-     * This is a Foreign Key to `team.id`.<fk table='team' column='id'/>
-     */
-    teamId?: number;
     /** Format: text */
     bio?: string;
     /** Format: character varying */
@@ -653,30 +531,30 @@ export interface parameters {
   offset: string;
   /** @description Limiting and Pagination */
   limit: string;
-  /** @description comment */
-  "body.comment": definitions["comment"];
+  /** @description comments */
+  "body.comments": definitions["comments"];
   /** Format: bigint */
-  "rowFilter.comment.id": string;
+  "rowFilter.comments.id": string;
   /** Format: timestamp with time zone */
-  "rowFilter.comment.createdAt": string;
+  "rowFilter.comments.createdAt": string;
   /** Format: text */
-  "rowFilter.comment.body": string;
+  "rowFilter.comments.body": string;
   /** Format: character varying */
-  "rowFilter.comment.authorId": string;
+  "rowFilter.comments.authorId": string;
   /** Format: bigint */
-  "rowFilter.comment.discussionId": string;
-  /** @description discussion */
-  "body.discussion": definitions["discussion"];
+  "rowFilter.comments.discussionId": string;
+  /** @description discussions */
+  "body.discussions": definitions["discussions"];
   /** Format: bigint */
-  "rowFilter.discussion.id": string;
+  "rowFilter.discussions.id": string;
   /** Format: timestamp with time zone */
-  "rowFilter.discussion.createdAt": string;
+  "rowFilter.discussions.createdAt": string;
   /** Format: character varying */
-  "rowFilter.discussion.title": string;
+  "rowFilter.discussions.title": string;
   /** Format: text */
-  "rowFilter.discussion.body": string;
+  "rowFilter.discussions.body": string;
   /** Format: character varying */
-  "rowFilter.discussion.teamId": string;
+  "rowFilter.discussions.teamId": string;
   /** @description suppen */
   "body.suppen": definitions["suppen"];
   /** Format: bigint */
@@ -687,16 +565,6 @@ export interface parameters {
   "rowFilter.suppen.title": string;
   /** Format: text */
   "rowFilter.suppen.body": string;
-  /** @description team */
-  "body.team": definitions["team"];
-  /** Format: bigint */
-  "rowFilter.team.id": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.team.createdAt": string;
-  /** Format: character varying */
-  "rowFilter.team.name": string;
-  /** Format: text */
-  "rowFilter.team.description": string;
   /** @description users */
   "body.users": definitions["users"];
   /** Format: bigint */
@@ -709,8 +577,6 @@ export interface parameters {
   "rowFilter.users.lastName": string;
   /** Format: character varying */
   "rowFilter.users.role": string;
-  /** Format: bigint */
-  "rowFilter.users.teamId": string;
   /** Format: text */
   "rowFilter.users.bio": string;
   /** Format: character varying */

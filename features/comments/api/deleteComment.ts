@@ -5,7 +5,7 @@ import { useNotificationStore } from "@/stores/notifications";
 import { Comment } from "../types";
 import { supabase } from "@/lib/initSupabase";
 
-export const deleteComment = async ({ commentId }: { commentId: string }) => {
+export const deleteComment = async ({ commentId }: { commentId: number }) => {
   const { data } = await supabase
     .from<Comment>("comments")
     .delete()
@@ -15,7 +15,7 @@ export const deleteComment = async ({ commentId }: { commentId: string }) => {
 };
 
 type UseDeleteCommentOptions = {
-  discussionId: string;
+  discussionId: number;
   config?: MutationConfig<typeof deleteComment>;
 };
 
