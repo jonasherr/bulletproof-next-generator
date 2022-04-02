@@ -1,25 +1,17 @@
 import { existsSync, readFileSync } from "fs";
 
 import * as changeCase from "change-case";
-
-function getDefinitions(output) {
-  return output
-    .replace(/.*(?=export interface definitions)/gms, "")
-    .replace(/(?<=export interface parameters).*/gms, "")
-    .replace("export interface parameters", "")
-    .replace("export interface definitions {", "")
-    .split(/(?<=};).*/g);
-}
+import { getDefinitions, returnTypes } from "./utils.js";
 
 const generateFeature = {
   description: "Add new Feature",
   prompts: [
-    {
-      type: "list",
-      name: "renderingChoice",
-      message: "Select how you want your feature to render in NextJS",
-      choices: ["client side", "server side", "static"],
-    },
+    /*{
+                          type: "list",
+                          name: "renderingChoice",
+                          message: "Select how you want your feature to render in NextJS",
+                          choices: ["client side", "server side", "static"],
+                        },*/
   ],
   actions: (data) => {
     let actions = [];
@@ -47,6 +39,10 @@ const generateFeature = {
         const exists = existsSync(`features/${key}`);
 
         if (exists === false && key !== undefined && typeof key === "string") {
+          const typesObject = returnTypes({ key, value });
+
+          console.log(typesObject);
+
           // needs to be set, so plop can read the value in handlebar files
           // TODO: fix behaviour for multiple keys that need to be added
           data.name = key;
@@ -152,6 +148,7 @@ const generateFeature = {
           ];
         }
       });
+    return [];
     return actions;
   },
 };

@@ -218,6 +218,8 @@ export interface paths {
           created_at?: parameters["rowFilter.suppen.created_at"];
           title?: parameters["rowFilter.suppen.title"];
           body?: parameters["rowFilter.suppen.body"];
+          Float?: parameters["rowFilter.suppen.Float"];
+          ForeignKeyTest?: parameters["rowFilter.suppen.ForeignKeyTest"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -272,6 +274,8 @@ export interface paths {
           created_at?: parameters["rowFilter.suppen.created_at"];
           title?: parameters["rowFilter.suppen.title"];
           body?: parameters["rowFilter.suppen.body"];
+          Float?: parameters["rowFilter.suppen.Float"];
+          ForeignKeyTest?: parameters["rowFilter.suppen.ForeignKeyTest"];
         };
         header: {
           /** Preference */
@@ -290,6 +294,8 @@ export interface paths {
           created_at?: parameters["rowFilter.suppen.created_at"];
           title?: parameters["rowFilter.suppen.title"];
           body?: parameters["rowFilter.suppen.body"];
+          Float?: parameters["rowFilter.suppen.Float"];
+          ForeignKeyTest?: parameters["rowFilter.suppen.ForeignKeyTest"];
         };
         body: {
           /** suppen */
@@ -472,6 +478,14 @@ export interface definitions {
     title: string;
     /** Format: text */
     body?: string;
+    /** Format: real */
+    Float?: number;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `discussions.id`.<fk table='discussions' column='id'/>
+     */
+    ForeignKeyTest?: number;
   };
   users: {
     /**
@@ -565,6 +579,10 @@ export interface parameters {
   "rowFilter.suppen.title": string;
   /** Format: text */
   "rowFilter.suppen.body": string;
+  /** Format: real */
+  "rowFilter.suppen.Float": string;
+  /** Format: bigint */
+  "rowFilter.suppen.ForeignKeyTest": string;
   /** @description users */
   "body.users": definitions["users"];
   /** Format: bigint */
