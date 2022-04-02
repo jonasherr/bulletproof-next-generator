@@ -25,8 +25,6 @@ const SideNavigation = () => {
   const { checkAccess } = useAuthorization();
   const navigation = [
     { name: "Dashboard", to: "/dashboard", icon: HomeIcon },
-    { name: "Testinger", to: "/testinger", icon: FolderIcon },
-    { name: "Suppen", to: "/suppen", icon: FolderIcon },
     { name: "Discussions", to: "/discussions", icon: FolderIcon },
     checkAccess({ allowedRoles: [ROLES.ADMIN] }) && {
       name: "Users",

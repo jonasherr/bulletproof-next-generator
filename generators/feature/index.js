@@ -7,11 +7,11 @@ const generateFeature = {
   description: "Add new Feature",
   prompts: [
     /*{
-                          type: "list",
-                          name: "renderingChoice",
-                          message: "Select how you want your feature to render in NextJS",
-                          choices: ["client side", "server side", "static"],
-                        },*/
+                                          type: "list",
+                                          name: "renderingChoice",
+                                          message: "Select how you want your feature to render in NextJS",
+                                          choices: ["client side", "server side", "static"],
+                                        },*/
   ],
   actions: (data) => {
     let actions = [];
@@ -39,14 +39,15 @@ const generateFeature = {
         const exists = existsSync(`features/${key}`);
 
         if (exists === false && key !== undefined && typeof key === "string") {
-          const typesObject = returnTypes({ key, value });
+          const typesArray = returnTypes({ value });
 
-          console.log(typesObject);
+          console.log(typesArray);
 
           // needs to be set, so plop can read the value in handlebar files
           // TODO: fix behaviour for multiple keys that need to be added
           data.name = key;
           data.value = value;
+          data.types = typesArray;
           actions = [
             ...actions,
             {
@@ -148,7 +149,7 @@ const generateFeature = {
           ];
         }
       });
-    return [];
+    /*return [];*/
     return actions;
   },
 };

@@ -1,6 +1,7 @@
-export const returnTypes = ({ key, value }) => {
+export const returnTypes = ({ value }) => {
   const valueArray = value.match(/(?=\/\*\*).+?(?=;)/gs);
-  const types = valueArray.map((value) => {
+
+  return valueArray.map((value) => {
     let arrayObject = {};
     const type = value.match(/(?<=\s{2})(\w|\?)*: \w*/gi)[0];
 
@@ -16,10 +17,10 @@ export const returnTypes = ({ key, value }) => {
     } else {
       arrayObject.foreignKey = false;
     }
-    return arrayObject;
+    return arrayObject.filter(
+      (object) => object.name !== "id" && object.name !== "created_at"
+    );
   });
-
-  return { key, types };
 };
 
 export const getDefinitions = (output) => {

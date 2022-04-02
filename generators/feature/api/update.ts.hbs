@@ -7,8 +7,9 @@ import { supabase } from "@/lib/initSupabase";
 
 export type Update{{properCase name}}DTO = {
   data: {
-    title: string;
-    body: string;
+     {{#each types}}
+         {{this.name}}: {{this.type}};
+     {{/each}}
   };
   {{camelCase name}}Id: string;
 };

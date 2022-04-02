@@ -1,5 +1,5 @@
-import componentGenerator from "./generators/component/index.js";
-import featureGenerator from "./generators/feature/index.js";
+import componentGenerator from "./generators/component";
+import featureGenerator from "./generators/feature";
 
 export const OPENAPITSURL =
   "https://sidvhwpbhgmlmhvqdtlf.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpZHZod3BiaGdtbG1odnFkdGxmIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDY5ODk2MzgsImV4cCI6MTk2MjU2NTYzOH0.SFl-5eU-Y-2Y-jgc4DbEH8TpoHbp-VkVzeoVH5uzJbg";

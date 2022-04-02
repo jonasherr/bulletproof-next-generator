@@ -23,13 +23,15 @@ export const {{properCase name}}sList = () => {
     <Table<{{properCase name}}Type>
       data={ {{camelCase name}}sQuery.data }
       columns={[
+    {{#each types}}
         {
-          title: "Created At",
-          field: "createdAt",
-          Cell({ entry: { createdAt } }) {
-            return <span>{formatDate(createdAt)}</span>;
+          title: "{{properCase this.name}}",
+          field: "{{this.name}}",
+          Cell({ entry: { {{this.name}} } }) {
+            return <span>{ {{this.name}} }</span>;
           },
         },
+   {{/each}}
         {
           title: "",
           field: "id",
@@ -44,6 +46,7 @@ export const {{properCase name}}sList = () => {
             return <Delete{{properCase name}} id={id} />;
           },
         },
+
       ]}
     />
   );

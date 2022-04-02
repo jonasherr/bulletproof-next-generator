@@ -8,8 +8,9 @@ import { Authorization, ROLES } from '@/lib/authorization';
 import { Create{{properCase name}}DTO, useCreate{{properCase name}} } from '../api/create{{properCase name}}';
 
 const schema = z.object({
-  title: z.string().min(1, 'Required'),
-  body: z.string().min(1, 'Required'),
+  {{#each types}}
+    {{this.name}}: z.{{this.type}}(){{#unless this.optional}}.min(1, 'Required'){{/unless}},
+  {{/each}}
 });
 
 export const Create{{properCase name}} = () => {
@@ -45,17 +46,13 @@ export const Create{{properCase name}} = () => {
         >
           {({ register, formState }) => (
             <>
-              <InputField
-                label="Title"
-                error={formState.errors['title']}
-                registration={register('title')}
-              />
-
-              <TextAreaField
-                label="Body"
-                error={formState.errors['body']}
-                registration={register('body')}
-              />
+              {{#each types}}
+                <InputField
+                    label="{{properCase this.name}}"
+                    error={formState.errors['{{this.name}}']}
+                    registration={register('{{this.name}}')}
+                />
+              {{/each}}
             </>
           )}
         </Form>
