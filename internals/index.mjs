@@ -1,6 +1,9 @@
+import dotenv from "dotenv"
 import {featureGenerator} from "./feature/featureGenerator.mjs";
 
+dotenv.config()
+
 export const OPENAPITSURL =
-  "https://sidvhwpbhgmlmhvqdtlf.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpZHZod3BiaGdtbG1odnFkdGxmIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDY5ODk2MzgsImV4cCI6MTk2MjU2NTYzOH0.SFl-5eU-Y-2Y-jgc4DbEH8TpoHbp-VkVzeoVH5uzJbg";
+  `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/?apikey=${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`;
 
 featureGenerator();

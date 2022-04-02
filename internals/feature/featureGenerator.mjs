@@ -1,32 +1,63 @@
 import openapiTS from "openapi-typescript";
 
-import {OPENAPITSURL} from "../index.mjs";
-import {getDefinitions, renderHandleBarTemplate, returnArrayWithFeaturesThatDontExist, returnTypes} from "./utils.mjs";
 import * as changeCase from "change-case";
+
+import {OPENAPITSURL} from "../index.mjs";
+import {
+    appendFile,
+    getDefinitions,
+    renderHandleBarTemplate,
+    returnArrayWithFeaturesThatDontExist,
+    returnTemplateArray,
+    returnTypes,
+} from "./utils.mjs";
 import {registerHelpers} from "./helpers.mjs";
 
 export const featureGenerator = async () => {
-  const output = await openapiTS(OPENAPITSURL);
+    console.time("⏱ Generation time");
 
-  const definitions = getDefinitions(output);
+    const output = await openapiTS(OPENAPITSURL);
 
-  const allFeatures = returnArrayWithFeaturesThatDontExist(definitions)
+    const definitions = getDefinitions(output);
 
-  const newFeatures = allFeatures.filter(feature => !feature.exists)
+    const allFeatures = returnArrayWithFeaturesThatDontExist(definitions);
 
-  registerHelpers()
+    const newFeatures = allFeatures.filter((feature) => !feature.exists);
 
-  newFeatures.forEach(({key, value}) => {
-    renderHandleBarTemplate({
-      path: `./features/${changeCase.snakeCase(key)}/index.ts`,
-      templateFile: "generators/feature/index.ts.hbs",
-      data: {name: key, value, types: returnTypes({value})}
-    },)
+    registerHelpers()
 
-    renderHandleBarTemplate({
-      path: `./features/${changeCase.snakeCase(key)}/types/index.ts`,
-      templateFile: "generators/feature/types/index.ts.hbs",
-      data: {name: key, value, types: returnTypes({value})}
-    },)
-  })
+    if (newFeatures.length > 0) {
+        // create new types
+        newFeatures.forEach(({key, value}) => {
+            returnTemplateArray(key).forEach(({path, templateFile}) => {
+                console.log(`✅ ${path}`);
+                console.log(value)
+                renderHandleBarTemplate({
+                    path,
+                    templateFile,
+                    data: {name: key, value, types: returnTypes({value})},
+                });
+            });
+
+            appendFile({
+                stringToAppend: ` { name: "${key}", to: "/${changeCase.snakeCase(
+                    key
+                )}", icon: FolderIcon },`,
+                regex: /{ name: ".*", to: ".*", icon: .* },/,
+                path: "./components/Layout/MainLayout.tsx",
+            });
+        });
+    } else {
+        // refresh types
+        /*
+        * - features/feature/types/index.ts
+        * - optional: features/feature/components/create + features/feature/api/create
+        * - optional: features/feature/components/update + features/feature/api/update
+        * - optional: features/feature/components/list
+        * */
+    }
+
+    console.log(newFeatures.length > 0 ? "🚀 New features were generated" : "🧑‍🔧 Feature types were refreshed");
+
+    console.timeEnd("⏱ Generation time");
 };
