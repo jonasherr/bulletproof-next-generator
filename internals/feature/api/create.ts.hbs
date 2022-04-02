@@ -1,0 +1,65 @@
+import { useMutation } from "react-query";
+import { MutationConfig, queryClient } from "@/lib/react-query";
+import { useNotificationStore } from "@/stores/notifications";
+
+import { {{properCase name}}Type } from "../types";
+import { supabase } from "@/lib/initSupabase";
+
+export type Create{{properCase name}}DTO = {
+  data: {
+    {{#each types}}
+        {{this.name}}: {{this.type}};
+    {{/each}}
+  };
+};
+
+export const create{{properCase name}} = async ({
+  data,
+}: Create{{properCase name}}DTO): Promise<{{properCase name}}Type> => {
+  const { data: created{{properCase name}} } = await supabase
+    .from<{{properCase name}}Type>("{{dashCase name}}")
+    .insert([data]);
+
+  if (created{{properCase name}} === null) throw Error();
+
+  return created{{properCase name}}[0];
+};
+
+type UseCreate{{properCase name}}Options = {
+  config?: MutationConfig<typeof create{{properCase name}}>;
+};
+
+export const useCreate{{properCase name}} = ({
+  config,
+}: UseCreate{{properCase name}}Options = {}) => {
+  const { addNotification } = useNotificationStore();
+  return useMutation({
+    onMutate: async (new{{properCase name}}) => {
+      await queryClient.cancelQueries("{{dashCase name}}s");
+
+      const previous{{properCase name}}s =
+        queryClient.getQueryData<{{properCase name}}Type[]>("{{dashCase name}}s");
+
+      queryClient.setQueryData("{{dashCase name}}s", [
+        ...(previous{{properCase name}}s || []),
+        new{{properCase name}}.data,
+      ]);
+
+      return { previous{{properCase name}}s };
+    },
+    onError: (_, __, context: any) => {
+      if (context?.previous{{properCase name}}s) {
+        queryClient.setQueryData("{{dashCase name}}s", context.previous{{properCase name}}s);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries("{{dashCase name}}s");
+      addNotification({
+        type: "success",
+        title: "{{properCase name}} Created",
+      });
+    },
+    ...config,
+    mutationFn: create{{properCase name}},
+  });
+};

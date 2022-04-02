@@ -1,0 +1,73 @@
+import { PencilIcon } from '@heroicons/react/solid';
+import * as z from 'zod';
+
+import { Button } from '@/components/Elements';
+import { Form, FormDrawer, InputField, TextAreaField } from '@/components/Form';
+import { Authorization, ROLES } from '@/lib/authorization';
+
+import { use{{properCase name}} } from '../api/get{{properCase name}}';
+import { Update{{properCase name}}DTO, useUpdate{{properCase name}} } from '../api/update{{properCase name}}';
+
+type Update{{properCase name}}Props = {
+  {{camelCase name}}Id: string;
+};
+
+const schema = z.object({
+  {{#each types}}
+    {{this.name}}: z.{{this.type}}(){{#unless this.optional}}.min(1, 'Required'){{/unless}},
+  {{/each}}
+});
+
+export const Update{{properCase name}} = ({ {{camelCase name}}Id }: Update{{properCase name}}Props) => {
+  const {{camelCase name}}Query = use{{properCase name}}({ {{camelCase name}}Id });
+  const update{{properCase name}}Mutation = useUpdate{{properCase name}}();
+
+  return (
+    <Authorization allowedRoles={[ROLES.ADMIN]}>
+      <FormDrawer
+        isDone={update{{properCase name}}Mutation.isSuccess}
+        triggerButton={
+          <Button startIcon={<PencilIcon className="h-4 w-4" />} size="sm">
+            Update {{properCase name}}
+          </Button>
+        }
+        title="Update {{properCase name}}"
+        submitButton={
+          <Button
+            form="update-{{dashCase name}}"
+            type="submit"
+            size="sm"
+            isLoading={update{{properCase name}}Mutation.isLoading}
+          >
+            Submit
+          </Button>
+        }
+      >
+        <Form<Update{{properCase name}}DTO['data'], typeof schema>
+          id="update-{{dashCase name}}"
+          onSubmit={async (values) => {
+            await update{{properCase name}}Mutation.mutateAsync({ data: values, {{camelCase name}}Id });
+          }}
+          options={ {
+            defaultValues: {
+              body: {{camelCase name}}Query.data?.body,
+            },
+          } }
+          schema={schema}
+        >
+          {({ register, formState }) => (
+            <>
+              {{#each types}}
+                  <InputField
+                      label="{{properCase this.name}}"
+                      error={formState.errors['{{this.name}}']}
+                      registration={register('{{this.name}}')}
+                  />
+               {{/each}}
+            </>
+          )}
+        </Form>
+      </FormDrawer>
+    </Authorization>
+  );
+};

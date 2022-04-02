@@ -1,0 +1,81 @@
+import { useMutation } from "react-query";
+import { MutationConfig, queryClient } from "@/lib/react-query";
+import { useNotificationStore } from "@/stores/notifications";
+
+import { {{properCase name}}Type } from "../types";
+import { supabase } from "@/lib/initSupabase";
+
+export type Update{{properCase name}}DTO = {
+  data: {
+     {{#each types}}
+         {{this.name}}: {{this.type}};
+     {{/each}}
+  };
+  {{camelCase name}}Id: string;
+};
+
+export const update{{properCase name}} = async ({
+  data,
+  {{camelCase name}}Id,
+}: Update{{properCase name}}DTO): Promise<{{properCase name}}Type> => {
+  const { data: updated{{properCase name}} } = await supabase
+    .from<{{properCase name}}Type>("{{dashCase name}}")
+    .update(data)
+    .match({ id: {{camelCase name}}Id });
+
+  if (updated{{properCase name}} === null) throw Error();
+
+  return updated{{properCase name}}[0];
+};
+
+type UseUpdate{{properCase name}}Options = {
+  config?: MutationConfig<typeof update{{properCase name}}>;
+};
+
+export const useUpdate{{properCase name}} = ({
+  config,
+}: UseUpdate{{properCase name}}Options = {}) => {
+  const { addNotification } = useNotificationStore();
+
+  return useMutation({
+    onMutate: async (updating{{properCase name}}: any) => {
+      await queryClient.cancelQueries([
+        "{{dashCase name}}",
+        updating{{properCase name}}?.{{camelCase name}}Id,
+      ]);
+
+      const previous{{properCase name}} = queryClient.getQueryData<{{properCase name}}Type>([
+        "{{dashCase name}}",
+        updating{{properCase name}}?.{{camelCase name}}Id,
+      ]);
+
+      queryClient.setQueryData(
+        ["{{dashCase name}}", updating{{properCase name}}?.{{camelCase name}}Id],
+        {
+          ...previous{{properCase name}},
+          ...updating{{properCase name}}.data,
+          id: updating{{properCase name}}.{{camelCase name}}Id,
+        }
+      );
+
+      return { previous{{properCase name}} };
+    },
+    onError: (_, __, context: any) => {
+      if (context?.previous{{properCase name}}) {
+        queryClient.setQueryData(
+          ["{{dashCase name}}", context.previous{{properCase name}}.id],
+          context.previous{{properCase name}}
+        );
+      }
+    },
+    onSuccess: (data) => {
+      queryClient.refetchQueries(["{{dashCase name}}", data.id]);
+      addNotification({
+        type: "success",
+        title: "{{properCase name}} Updated",
+      });
+    },
+    ...config,
+    mutationFn: update{{properCase name}},
+  });
+};
