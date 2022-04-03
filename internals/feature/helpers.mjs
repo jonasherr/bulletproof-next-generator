@@ -2,6 +2,14 @@ import * as changeCase from "change-case";
 import handlebars from "handlebars";
 
 export const registerHelpers = () => {
+    handlebars.registerHelper('isBoolean', function (value) {
+        return value === "boolean"
+    });
+
+    handlebars.registerHelper("apostropheCase", (string) => {
+        if (string.includes(" ")) return `"${string}"`
+        return string
+    })
     handlebars.registerHelper("camelCase", (string) => {
         return changeCase.camelCase(string)
     })

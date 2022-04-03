@@ -1,5 +1,4 @@
 import openapiTS from "openapi-typescript";
-
 import * as changeCase from "change-case";
 
 import {OPENAPITSURL} from "../index.mjs";
@@ -26,12 +25,12 @@ export const featureGenerator = async () => {
 
     registerHelpers()
 
+
     if (newFeatures.length > 0) {
         // create new types
         newFeatures.forEach(({key, value}) => {
             returnTemplateArray(key).forEach(({path, templateFile}) => {
                 console.log(`✅ ${path}`);
-                console.log(value)
                 renderHandleBarTemplate({
                     path,
                     templateFile,

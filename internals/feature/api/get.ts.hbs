@@ -7,7 +7,7 @@ import { supabase } from "@/lib/initSupabase";
 export const get{{properCase name}} = async ({
   {{camelCase name}}Id,
 }: {
-  {{camelCase name}}Id: string;
+  {{camelCase name}}Id: number;
 }): Promise<{{properCase name}}Type | undefined> => {
   const { data: {{camelCase name}} } = await supabase
     .from<{{properCase name}}Type>("{{dashCase name}}")
@@ -22,7 +22,7 @@ export const get{{properCase name}} = async ({
 type QueryFnType = typeof get{{properCase name}};
 
 type Use{{properCase name}}Options = {
-  {{camelCase name}}Id: string;
+  {{camelCase name}}Id: number;
   config?: QueryConfig<QueryFnType>;
 };
 

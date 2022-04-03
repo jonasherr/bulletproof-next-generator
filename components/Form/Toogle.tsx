@@ -8,7 +8,7 @@ type InputFieldProps = FieldWrapperPassThroughProps & {
   registration: Partial<UseFormRegisterReturn>;
 };
 
-export const InputField = (props: InputFieldProps) => {
+export const Toggle = (props: InputFieldProps) => {
   const { label, className, registration, error } = props;
   return (
     <FieldWrapper label={label} error={error}>

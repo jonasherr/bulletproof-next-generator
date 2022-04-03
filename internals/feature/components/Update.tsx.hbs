@@ -9,12 +9,12 @@ import { use{{properCase name}} } from '../api/get{{properCase name}}';
 import { Update{{properCase name}}DTO, useUpdate{{properCase name}} } from '../api/update{{properCase name}}';
 
 type Update{{properCase name}}Props = {
-  {{camelCase name}}Id: string;
+  {{camelCase name}}Id: number;
 };
 
 const schema = z.object({
   {{#each types}}
-    {{this.name}}: z.{{this.type}}(){{#unless this.optional}}.min(1, 'Required'){{/unless}},
+    {{camelCase this.name}}: z.{{lowerCase this.type}}(){{#unless this.optional}}.min(1, 'Required'){{/unless}},
   {{/each}}
 });
 
@@ -60,8 +60,8 @@ export const Update{{properCase name}} = ({ {{camelCase name}}Id }: Update{{prop
               {{#each types}}
                   <InputField
                       label="{{properCase this.name}}"
-                      error={formState.errors['{{this.name}}']}
-                      registration={register('{{this.name}}')}
+                      error={formState.errors['{{camelCase this.name}}']}
+                      registration={register('{{camelCase this.name}}')}
                   />
                {{/each}}
             </>

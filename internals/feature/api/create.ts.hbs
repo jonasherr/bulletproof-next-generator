@@ -8,7 +8,7 @@ import { supabase } from "@/lib/initSupabase";
 export type Create{{properCase name}}DTO = {
   data: {
     {{#each types}}
-        {{this.name}}: {{this.type}};
+        {{camelCase this.name}}: {{this.type}};
     {{/each}}
   };
 };

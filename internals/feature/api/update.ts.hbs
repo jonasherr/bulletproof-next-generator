@@ -8,10 +8,10 @@ import { supabase } from "@/lib/initSupabase";
 export type Update{{properCase name}}DTO = {
   data: {
      {{#each types}}
-         {{this.name}}: {{this.type}};
+         {{camelCase this.name}}: {{this.type}};
      {{/each}}
   };
-  {{camelCase name}}Id: string;
+  {{camelCase name}}Id: number;
 };
 
 export const update{{properCase name}} = async ({

@@ -8,10 +8,12 @@ export const returnTypes = ({ value }) => {
   return valueArray
     .map((value) => {
       let arrayObject = {};
-      const type = value.match(/(?<=\s{2})(\w|\?)*: \w*/gi)[0];
 
-      arrayObject.name = type.match(/(\w)*(?=([?:]))/i)[0];
+      const type = value.replaceAll('"', '').match(/(?<=\s{4})\w* ?\w*\??"?: \w*/gi)[0].trim();
+
+      arrayObject.name = type.replace("Format:", "").replace("Note:", "").match(/(\w)* ?(\w)+(?=(["?:]))/i)[0].trim();
       arrayObject.type = type.match(/(?<=:\s)\S*/i)[0];
+      if (value.includes("Format: date")) arrayObject.type = "Date"
       arrayObject.optional = type.includes("?");
       arrayObject.primaryKey = value.includes("<pk />");
       if (value.includes("<fk")) {
@@ -78,75 +80,75 @@ export const returnTemplateArray = (key) => {
   return [
     {
       path: `./features/${changeCase.snakeCase(key)}/index.ts`,
-      templateFile: "generators/feature/index.ts.hbs",
+      templateFile: "internals/feature/index.ts.hbs",
     },
     {
       path: `./features/${changeCase.snakeCase(key)}/types/index.ts`,
-      templateFile: "generators/feature/types/index.ts.hbs",
+      templateFile: "internals/feature/types/index.ts.hbs",
     },
     {
       path: `./pages/${changeCase.snakeCase(key)}/[${changeCase.camelCase(
         key
       )}Id].tsx`,
-      templateFile: "generators/feature/pages/SinglePage.tsx.hbs",
+      templateFile: "internals/feature/pages/SinglePage.tsx.hbs",
     },
     {
       path: `./pages/${changeCase.snakeCase(key)}/index.tsx`,
-      templateFile: "generators/feature/pages/List.tsx.hbs",
+      templateFile: "internals/feature/pages/List.tsx.hbs",
     },
     {
       path: `./features/${changeCase.snakeCase(
         key
       )}/components/Create${changeCase.pascalCase(key)}.tsx`,
-      templateFile: "generators/feature/components/Create.tsx.hbs",
+      templateFile: "internals/feature/components/Create.tsx.hbs",
     },
     {
       path: `./features/${changeCase.snakeCase(
         key
       )}/components/Delete${changeCase.pascalCase(key)}.tsx`,
-      templateFile: "generators/feature/components/Delete.tsx.hbs",
+      templateFile: "internals/feature/components/Delete.tsx.hbs",
     },
     {
       path: `./features/${changeCase.snakeCase(
         key
       )}/components/${changeCase.pascalCase(key)}sList.tsx`,
-      templateFile: "generators/feature/components/List.tsx.hbs",
+      templateFile: "internals/feature/components/List.tsx.hbs",
     },
     {
       path: `./features/${changeCase.snakeCase(
         key
       )}/components/Update${changeCase.pascalCase(key)}.tsx`,
-      templateFile: "generators/feature/components/Update.tsx.hbs",
+      templateFile: "internals/feature/components/Update.tsx.hbs",
     },
     {
       path: `./features/${changeCase.snakeCase(
         key
       )}/api/create${changeCase.pascalCase(key)}.ts`,
-      templateFile: "generators/feature/api/create.ts.hbs",
+      templateFile: "internals/feature/api/create.ts.hbs",
     },
     {
       path: `./features/${changeCase.snakeCase(
         key
       )}/api/delete${changeCase.pascalCase(key)}.ts`,
-      templateFile: "generators/feature/api/delete.ts.hbs",
+      templateFile: "internals/feature/api/delete.ts.hbs",
     },
     {
       path: `./features/${changeCase.snakeCase(
         key
       )}/api/get${changeCase.pascalCase(key)}.ts`,
-      templateFile: "generators/feature/api/get.ts.hbs",
+      templateFile: "internals/feature/api/get.ts.hbs",
     },
     {
       path: `./features/${changeCase.snakeCase(
         key
       )}/api/get${changeCase.pascalCase(key)}s.ts`,
-      templateFile: "generators/feature/api/getList.ts.hbs",
+      templateFile: "internals/feature/api/getList.ts.hbs",
     },
     {
       path: `./features/${changeCase.snakeCase(
         key
       )}/api/update${changeCase.pascalCase(key)}.ts`,
-      templateFile: "generators/feature/api/update.ts.hbs",
+      templateFile: "internals/feature/api/update.ts.hbs",
     },
   ];
 };

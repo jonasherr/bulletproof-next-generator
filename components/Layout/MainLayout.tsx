@@ -34,6 +34,13 @@ const SideNavigation = () => {
   { name: "suppen", to: "/suppen", icon: FolderIcon }, 
   { name: "suppen", to: "/suppen", icon: FolderIcon }, 
   { name: "suppen", to: "/suppen", icon: FolderIcon }, 
+  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
+  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
+  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
+  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
+  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
+  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
+  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
   { name: "suppen", to: "/suppen", icon: FolderIcon },
     { name: "Discussions", to: "/discussions", icon: FolderIcon },
     checkAccess({ allowedRoles: [ROLES.ADMIN] }) && {

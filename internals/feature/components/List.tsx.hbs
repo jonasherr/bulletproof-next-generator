@@ -28,7 +28,7 @@ export const {{properCase name}}sList = () => {
           title: "{{properCase this.name}}",
           field: "{{this.name}}",
           Cell({ entry: { {{this.name}} } }) {
-            return <span>{ {{this.name}} }</span>;
+            return <span>{ {{camelCase this.name}} }</span>;
           },
         },
    {{/each}}
