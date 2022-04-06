@@ -50,20 +50,36 @@ export const Update{{properCase name}} = ({ {{camelCase name}}Id }: Update{{prop
           }}
           options={ {
             defaultValues: {
-              body: {{camelCase name}}Query.data?.body,
+            {{#each types}}
+                {{camelCase this.name}}: {{camelCase ../name}}Query.data?.{{camelCase this.name}},
+            {{/each}}
             },
           } }
           schema={schema}
         >
           {({ register, formState }) => (
             <>
-              {{#each types}}
-                  <InputField
-                      label="{{properCase this.name}}"
-                      error={formState.errors['{{camelCase this.name}}']}
-                      registration={register('{{camelCase this.name}}')}
-                  />
-               {{/each}}
+            {{#each types}}
+             {{#unless (isBoolean this.type)}}
+             <InputField
+                label="{{properCase this.name}}"
+                type="{{lowerCase this.type}}"
+                error={formState.errors['{{camelCase this.name}}']}
+                {{#if (isNumber this.type)}}
+                registration={register('{{camelCase this.name}}', { valueAsNumber: true })}
+                {{/if}}
+                {{#unless (isNumber this.type)}}
+                registration={register('{{camelCase this.name}}')}
+                {{/unless}}
+             />
+             {{/unless}}
+             {{#if (isBoolean this.type)}}
+             <Toggle
+                error={formState.errors['{{camelCase this.name}}']}
+                registration={register('{{camelCase this.name}}')}
+             />
+            {{/if}}
+            {{/each}}
             </>
           )}
         </Form>

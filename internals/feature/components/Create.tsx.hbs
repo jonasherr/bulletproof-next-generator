@@ -52,7 +52,12 @@ export const Create{{properCase name}} = () => {
                   label="{{properCase this.name}}"
                   type="{{lowerCase this.type}}"
                   error={formState.errors['{{camelCase this.name}}']}
+                  {{#if (isNumber this.type)}}
+                  registration={register('{{camelCase this.name}}', { valueAsNumber: true })}
+                  {{/if}}
+                  {{#unless (isNumber this.type)}}
                   registration={register('{{camelCase this.name}}')}
+                  {{/unless}}
               />
               {{/unless}}
               {{#if (isBoolean this.type)}}

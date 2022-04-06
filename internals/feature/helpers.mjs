@@ -6,6 +6,10 @@ export const registerHelpers = () => {
         return value === "boolean"
     });
 
+    handlebars.registerHelper('isNumber', function (value) {
+        return value === "number"
+    });
+
     handlebars.registerHelper("apostropheCase", (string) => {
         if (string.includes(" ")) return `"${string}"`
         return string

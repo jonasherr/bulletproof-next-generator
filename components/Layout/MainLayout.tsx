@@ -24,24 +24,7 @@ type SideNavigationItem = {
 const SideNavigation = () => {
   const { checkAccess } = useAuthorization();
   const navigation = [
-    { name: "Dashboard", to: "/dashboard", icon: HomeIcon }, 
-  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
-  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
-  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
-  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
-  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
-  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
-  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
-  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
-  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
-  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
-  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
-  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
-  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
-  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
-  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
-  { name: "suppen", to: "/suppen", icon: FolderIcon }, 
-  { name: "suppen", to: "/suppen", icon: FolderIcon },
+    { name: "Dashboard", to: "/dashboard", icon: HomeIcon },
     { name: "Discussions", to: "/discussions", icon: FolderIcon },
     checkAccess({ allowedRoles: [ROLES.ADMIN] }) && {
       name: "Users",
@@ -211,7 +194,7 @@ const MobileSidebar = ({ sidebarOpen, setSidebarOpen }: MobileSidebarProps) => {
             </div>
           </div>
         </Transition.Child>
-        <div className="flex-shrink-0 w-14" aria-hidden="true"></div>
+        <div className="flex-shrink-0 w-14" aria-hidden="true" />
       </Dialog>
     </Transition.Root>
   );
@@ -238,7 +221,7 @@ const Sidebar = () => {
 
 const Logo = () => {
   return (
-    <Link href="/">
+    <Link href="/" passHref={true}>
       <div className="flex items-center text-white">
         <div className="h-8 w-auto">
           <Image src={logo} alt="Workflow" />
