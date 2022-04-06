@@ -1,15 +1,16 @@
 import openapiTS from "openapi-typescript";
-import * as changeCase from "change-case";
 
 import {OPENAPITSURL} from "../index.mjs";
 import {
     appendFile,
     getDefinitions,
+    renameTypesWithSpaceToCamelCase,
     renderHandleBarTemplate,
     returnArrayWithFeaturesThatDontExist,
     returnTemplateArray,
     returnTypes,
 } from "./utils.mjs";
+import {snakeCase} from "change-case";
 import {registerHelpers} from "./helpers.mjs";
 
 export const featureGenerator = async () => {
@@ -19,7 +20,9 @@ export const featureGenerator = async () => {
 
     const definitions = getDefinitions(output);
 
-    const allFeatures = returnArrayWithFeaturesThatDontExist(definitions);
+    const renamedDefinitions = renameTypesWithSpaceToCamelCase(definitions)
+
+    const allFeatures = returnArrayWithFeaturesThatDontExist(renamedDefinitions);
 
     const newFeatures = allFeatures.filter((feature) => !feature.exists);
 
@@ -39,7 +42,7 @@ export const featureGenerator = async () => {
             });
 
             appendFile({
-                stringToAppend: ` { name: "${key}", to: "/${changeCase.snakeCase(
+                stringToAppend: ` { name: "${key}", to: "/${snakeCase(
                     key
                 )}", icon: FolderIcon },`,
                 regex: /{ name: ".*", to: ".*", icon: .* },/,

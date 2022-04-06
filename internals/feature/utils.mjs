@@ -1,6 +1,7 @@
 import {existsSync, mkdirSync, readFileSync, writeFileSync} from "fs";
 import handlebars from "handlebars";
 import * as changeCase from "change-case";
+import {camelCase} from "change-case";
 
 export const returnTypes = ({ value }) => {
   const valueArray = value.match(/(?=\/\*\*).+?(?=;)/gs);
@@ -38,6 +39,13 @@ export const getDefinitions = (output) => {
     .replace("export interface definitions {", "")
     .split(/(?<=};).*/g);
 };
+
+export const renameTypesWithSpaceToCamelCase = (definitions) => {
+    return definitions.map(definition => definition.replace(/".*"\??:/gm, (match) => {
+        const optionalType = match.slice(-2).includes("?")
+        return camelCase(match.replace(/"/gm, "")) + (optionalType ? "?:" : ":")
+    }))
+}
 
 export const returnArrayWithFeaturesThatDontExist = (definitions) =>
   definitions
