@@ -1,13 +1,9 @@
-import {OPENAPITSURL} from "../index.mjs";
-import axios from "axios";
-import {appendFile, getDirectories, renderHandleBarTemplate, returnTemplateArray,} from "./utils.mjs";
-import {camelCase, snakeCase} from "change-case";
+import {getDirectories,} from "./utils.mjs";
+import {camelCase} from "change-case";
 import {registerHelpers} from "./helpers.mjs";
 
-export const featureGenerator = async () => {
+export const featureGenerator = async ({swaggerSpecification, mode}) => {
   console.time("⏱ Generation time");
-
-  const { data: swaggerSpecification } = await axios(OPENAPITSURL);
 
   const existingFeatureArray = await getDirectories("./features");
 
@@ -55,7 +51,9 @@ export const featureGenerator = async () => {
       });
       typescriptTypes += "}";
 
-      returnTemplateArray(key).forEach(({ path, templateFile }) => {
+      console.log({ name: key, value: typescriptTypes, types })
+
+      /*returnTemplateArray(key).forEach(({ path, templateFile }) => {
         console.log(`✅ ${path}`);
         renderHandleBarTemplate({
           path,
@@ -70,11 +68,11 @@ export const featureGenerator = async () => {
         )}", icon: FolderIcon },`,
         regex: /{ name: ".*", to: ".*", icon: .* },/,
         path: "./components/Layout/MainLayout.tsx",
-      });
+      });*/
 
       console.log(`🚀 New feature ${key} was generated`);
     }
   });
-
+  console.log(mode)
   console.timeEnd("⏱ Generation time");
 };
