@@ -7,7 +7,7 @@ import { supabase } from "@/lib/initSupabase";
 export const getComments = async ({
   discussionId,
 }: {
-  discussionId: string;
+  discussionId: number;
 }): Promise<Comment[]> => {
   const response = await supabase
     .from<Comment>("comments")
@@ -20,7 +20,7 @@ export const getComments = async ({
 type QueryFnType = typeof getComments;
 
 type UseCommentsOptions = {
-  discussionId: string;
+  discussionId: number;
   config?: QueryConfig<QueryFnType>;
 };
 

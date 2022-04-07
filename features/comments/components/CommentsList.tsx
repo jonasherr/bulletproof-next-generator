@@ -1,7 +1,6 @@
 import { ArchiveIcon } from "@heroicons/react/outline";
 
 import { MDPreview, Spinner } from "@/components/Elements";
-import { User } from "@/features/users";
 import { useAuth } from "@/lib/auth";
 import { Authorization, POLICIES } from "@/lib/authorization";
 import { formatDate } from "@/utils/format";
@@ -9,9 +8,10 @@ import { formatDate } from "@/utils/format";
 import { useComments } from "../api/getComments";
 
 import { DeleteComment } from "./DeleteComment";
+import { AuthUser } from "@/features/auth";
 
 type CommentsListProps = {
-  discussionId: string;
+  discussionId: number;
 };
 
 export const CommentsList = ({ discussionId }: CommentsListProps) => {
@@ -47,7 +47,7 @@ export const CommentsList = ({ discussionId }: CommentsListProps) => {
           className="w-full bg-white shadow-sm p-4"
         >
           <Authorization
-            policyCheck={POLICIES["comment:delete"](user as User, comment)}
+            policyCheck={POLICIES["comment:delete"](user as AuthUser, comment)}
           >
             <div className="flex justify-between">
               <span className="text-xs font-semibold">

@@ -1,12 +1,12 @@
-import { TrashIcon } from '@heroicons/react/outline';
+import { TrashIcon } from "@heroicons/react/outline";
 
-import { Button, ConfirmationDialog } from '@/components/Elements';
+import { Button, ConfirmationDialog } from "@/components/Elements";
 
-import { useDeleteComment } from '../api/deleteComment';
+import { useDeleteComment } from "../api/deleteComment";
 
 type DeleteCommentProps = {
-  id: string;
-  discussionId: string;
+  id: number;
+  discussionId: number;
 };
 
 export const DeleteComment = ({ id, discussionId }: DeleteCommentProps) => {
@@ -19,7 +19,11 @@ export const DeleteComment = ({ id, discussionId }: DeleteCommentProps) => {
       title="Delete Comment"
       body="Are you sure you want to delete this comment?"
       triggerButton={
-        <Button variant="danger" size="sm" startIcon={<TrashIcon className="h-4 w-4" />}>
+        <Button
+          variant="danger"
+          size="sm"
+          startIcon={<TrashIcon className="h-4 w-4" />}
+        >
           Delete Comment
         </Button>
       }
@@ -28,7 +32,9 @@ export const DeleteComment = ({ id, discussionId }: DeleteCommentProps) => {
           isLoading={deleteCommentMutation.isLoading}
           type="button"
           className="bg-red-600"
-          onClick={async () => await deleteCommentMutation.mutateAsync({ commentId: id })}
+          onClick={async () =>
+            await deleteCommentMutation.mutateAsync({ commentId: id })
+          }
         >
           Delete Comment
         </Button>
