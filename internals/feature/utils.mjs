@@ -1,70 +1,12 @@
 import {existsSync, mkdirSync, readFileSync, writeFileSync} from "fs";
 import handlebars from "handlebars";
 import * as changeCase from "change-case";
-import {camelCase} from "change-case";
+import {readdir} from "fs/promises";
 
-export const returnTypes = ({ value }) => {
-  const valueArray = value.match(/(?=\/\*\*).+?(?=;)/gs);
-
-  return valueArray
-    .map((value) => {
-      let arrayObject = {};
-
-      const type = value.replaceAll('"', '').match(/(?<=\s{4})\w* ?\w*\??"?: \w*/gi)[0].trim();
-
-      arrayObject.name = type.replace("Format:", "").replace("Note:", "").match(/(\w)* ?(\w)+(?=(["?:]))/i)[0].trim();
-      arrayObject.type = type.match(/(?<=:\s)\S*/i)[0];
-      if (value.includes("Format: date")) arrayObject.type = "Date"
-      arrayObject.optional = type.includes("?");
-      arrayObject.primaryKey = value.includes("<pk />");
-      if (value.includes("<fk")) {
-        arrayObject.foreignKey = {
-          table: value.match(/(?<=table=')\w*/i)[0],
-          column: value.match(/(?<=column=')\w*/i)[0],
-        };
-      } else {
-        arrayObject.foreignKey = false;
-      }
-
-      return arrayObject;
-    })
-    .filter((object) => object.name !== "id" && object.name !== "created_at");
-};
-
-export const getDefinitions = (output) => {
-  return output
-    .replace(/.*(?=export interface definitions)/gms, "")
-    .replace(/(?<=export interface parameters).*/gms, "")
-    .replace("export interface parameters", "")
-    .replace("export interface definitions {", "")
-    .split(/(?<=};).*/g);
-};
-
-export const renameTypesWithSpaceToCamelCase = (definitions) => {
-    return definitions.map(definition => definition.replace(/".*"\??:/gm, (match) => {
-        const optionalType = match.slice(-2).includes("?")
-        return camelCase(match.replace(/"/gm, "")) + (optionalType ? "?:" : ":")
-    }))
-}
-
-export const returnArrayWithFeaturesThatDontExist = (definitions) =>
-  definitions
-    .filter((definition) => definition.length > 10)
-    .map((definition) => {
-      if (!definition) return;
-
-      const keyMatch = definition.match(/\w*:/);
-      if (!keyMatch) return;
-      const key = keyMatch[0].replace(":", "");
-
-      const valueMatch = definition.match(/{.*};/ms);
-      if (!valueMatch) return;
-      const value = valueMatch[0];
-
-      const exists = existsSync(`./features/${key}`);
-
-      return { key, exists, value };
-    });
+export const getDirectories = async source =>
+    (await readdir(source, {withFileTypes: true}))
+        .filter(dirent => dirent.isDirectory())
+        .map(dirent => dirent.name)
 
 export const renderHandleBarTemplate = ({ path, templateFile, data }) => {
   const directory = path.split("/").slice(0, -1).join("/");

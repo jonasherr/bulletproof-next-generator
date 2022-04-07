@@ -1,65 +1,80 @@
-import openapiTS from "openapi-typescript";
-
 import {OPENAPITSURL} from "../index.mjs";
-import {
-    appendFile,
-    getDefinitions,
-    renameTypesWithSpaceToCamelCase,
-    renderHandleBarTemplate,
-    returnArrayWithFeaturesThatDontExist,
-    returnTemplateArray,
-    returnTypes,
-} from "./utils.mjs";
-import {snakeCase} from "change-case";
+import axios from "axios";
+import {appendFile, getDirectories, renderHandleBarTemplate, returnTemplateArray,} from "./utils.mjs";
+import {camelCase, snakeCase} from "change-case";
 import {registerHelpers} from "./helpers.mjs";
 
 export const featureGenerator = async () => {
-    console.time("⏱ Generation time");
+  console.time("⏱ Generation time");
 
-    const output = await openapiTS(OPENAPITSURL);
+  const { data: swaggerSpecification } = await axios(OPENAPITSURL);
 
-    const definitions = getDefinitions(output);
+  const existingFeatureArray = await getDirectories("./features");
 
-    const renamedDefinitions = renameTypesWithSpaceToCamelCase(definitions)
+  registerHelpers();
 
-    const allFeatures = returnArrayWithFeaturesThatDontExist(renamedDefinitions);
-
-    const newFeatures = allFeatures.filter((feature) => !feature.exists);
-
-    registerHelpers()
-
-
-    if (newFeatures.length > 0) {
-        // create new types
-        newFeatures.forEach(({key, value}) => {
-            returnTemplateArray(key).forEach(({path, templateFile}) => {
-                console.log(`✅ ${path}`);
-                renderHandleBarTemplate({
-                    path,
-                    templateFile,
-                    data: {name: key, value, types: returnTypes({value})},
-                });
-            });
-
-            appendFile({
-                stringToAppend: ` { name: "${key}", to: "/${snakeCase(
-                    key
-                )}", icon: FolderIcon },`,
-                regex: /{ name: ".*", to: ".*", icon: .* },/,
-                path: "./components/Layout/MainLayout.tsx",
-            });
-        });
+  Object.entries(swaggerSpecification.definitions).forEach(([key, value]) => {
+    if (existingFeatureArray.includes(key)) {
+      // refresh types
+      /*
+       * - features/feature/types/index.ts
+       * - optional: features/feature/components/create + features/feature/api/create
+       * - optional: features/feature/components/update + features/feature/api/update
+       * - optional: features/feature/components/list
+       * */
+      console.log(`🧑‍🔧 Feature ${key} was refreshed`);
     } else {
-        // refresh types
-        /*
-        * - features/feature/types/index.ts
-        * - optional: features/feature/components/create + features/feature/api/create
-        * - optional: features/feature/components/update + features/feature/api/update
-        * - optional: features/feature/components/list
-        * */
+      // create new types
+      const { required: requiredProperties, properties } = value;
+
+      /*
+       * Types structure:
+       *
+       * name: string (name of the type example commentId)
+       * type: Typescript type (actual typescript type)
+       * optional: boolean
+       * primaryKey?: true
+       * foreignKey?: true
+       *
+       * */
+      const types = Object.entries(properties).map(([key, value]) => {
+        return {
+          name: key,
+          type: value.type,
+          optional: !requiredProperties.includes(key),
+          primaryKey: value.description?.includes("<pk/>"),
+          foreignKey: value.description?.includes("<fk"),
+        };
+      });
+
+      let typescriptTypes = "{\n";
+      types.forEach((type) => {
+        typescriptTypes += `  ${camelCase(type.name)}${
+          type.optional ? "?" : ""
+        }: ${type.type}, \n`;
+      });
+      typescriptTypes += "}";
+
+      returnTemplateArray(key).forEach(({ path, templateFile }) => {
+        console.log(`✅ ${path}`);
+        renderHandleBarTemplate({
+          path,
+          templateFile,
+          data: { name: key, value: typescriptTypes, types },
+        });
+      });
+
+      appendFile({
+        stringToAppend: ` { name: "${key}", to: "/${snakeCase(
+          key
+        )}", icon: FolderIcon },`,
+        regex: /{ name: ".*", to: ".*", icon: .* },/,
+        path: "./components/Layout/MainLayout.tsx",
+      });
+
+      console.log(`🚀 New feature ${key} was generated`);
     }
+  });
 
-    console.log(newFeatures.length > 0 ? "🚀 New features were generated" : "🧑‍🔧 Feature types were refreshed");
-
-    console.timeEnd("⏱ Generation time");
+  console.timeEnd("⏱ Generation time");
 };

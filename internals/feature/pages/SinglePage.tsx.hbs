@@ -10,7 +10,7 @@ import { Update{{properCase name}} } from '@/features/{{camelCase name}}/compone
 
 const {{properCase name}} = () => {
 const { query } = useRouter();
-const {{camelCase name}}Id = query.{{camelCase name}}Id as string;
+const {{camelCase name}}Id = parseInt(query.{{camelCase name}}Id as string);
 const {{camelCase name}}Query = use{{properCase name}}({ {{camelCase name}}Id });
 
 if ({{camelCase name}}Query.isLoading) {
