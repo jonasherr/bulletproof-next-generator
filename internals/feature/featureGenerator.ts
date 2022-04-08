@@ -8,7 +8,6 @@ import {
 import { camelCase, snakeCase } from "change-case";
 import { registerHelpers } from "./helpers";
 import { Spec } from "swagger-schema-official";
-import * as path from "path";
 
 export enum modeEnum {
   FILEPATH = "filePath",
@@ -25,7 +24,7 @@ export const featureGenerator = async ({
 }) => {
   console.time("⏱ Generation time");
 
-  const existingFeatureArray = await getDirectories(path.dirname("./features"));
+  const existingFeatureArray = await getDirectories("./features");
 
   registerHelpers();
 
@@ -37,9 +36,6 @@ export const featureGenerator = async ({
       // refresh types
       /*
        * - features/feature/types/index.ts
-       * - optional: features/feature/components/create + features/feature/api/create
-       * - optional: features/feature/components/update + features/feature/api/update
-       * - optional: features/feature/components/list
        * */
       console.log(`🧑‍🔧 Feature ${key} was refreshed`);
     } else {
@@ -77,8 +73,6 @@ export const featureGenerator = async ({
         axios: mode !== modeEnum.SUPABASE,
       };
 
-      console.log(handleBarData);
-
       returnTemplateArray(key).forEach(({ path, templateFile }) => {
         console.log(`✅ ${path}`);
         renderHandleBarTemplate({
@@ -99,6 +93,5 @@ export const featureGenerator = async ({
       console.log(`🚀 New feature ${key} was generated`);
     }
   });
-  console.log(mode);
   console.timeEnd("⏱ Generation time");
 };
