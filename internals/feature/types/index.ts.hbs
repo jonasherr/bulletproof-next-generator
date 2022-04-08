@@ -1,1 +1,3 @@
-export type {{properCase name}}Type = {{ value }}
+import { BaseEntity } from "@/types";
+
+export type {{properCase name}}Type = {{ value }} & BaseEntity;
