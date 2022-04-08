@@ -1,10 +1,10 @@
-import { Table, Spinner } from '@/components/Elements';
-import { formatDate } from '@/utils/format';
+import { Spinner, Table } from "@/components/Elements";
+import { formatDate } from "@/utils/format";
 
-import { useUsers } from '../api/getUsers';
-import { User } from '../types';
+import { useUsers } from "../api/getUsers";
+import { UsersType } from "../types";
 
-import { DeleteUser } from './DeleteUser';
+import { DeleteUser } from "./DeleteUser";
 
 export const UsersList = () => {
   const usersQuery = useUsers();
@@ -20,35 +20,35 @@ export const UsersList = () => {
   if (!usersQuery.data) return null;
 
   return (
-    <Table<User>
+    <Table<UsersType>
       data={usersQuery.data}
       columns={[
         {
-          title: 'First Name',
-          field: 'firstName',
+          title: "First Name",
+          field: "firstName",
         },
         {
-          title: 'Last Name',
-          field: 'lastName',
+          title: "Last Name",
+          field: "lastName",
         },
         {
-          title: 'Email',
-          field: 'email',
+          title: "Email",
+          field: "email",
         },
         {
-          title: 'Role',
-          field: 'role',
+          title: "Role",
+          field: "role",
         },
         {
-          title: 'Created At',
-          field: 'createdAt',
+          title: "Created At",
+          field: "createdAt",
           Cell({ entry: { createdAt } }) {
             return <span>{formatDate(createdAt)}</span>;
           },
         },
         {
-          title: '',
-          field: 'id',
+          title: "",
+          field: "id",
           Cell({ entry: { id } }) {
             return <DeleteUser id={id} />;
           },

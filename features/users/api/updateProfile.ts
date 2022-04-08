@@ -4,7 +4,7 @@ import { useAuth } from "@/lib/auth";
 import { MutationConfig } from "@/lib/react-query";
 import { useNotificationStore } from "@/stores/notifications";
 import { supabase } from "@/lib/initSupabase";
-import { User } from "@/features/users";
+import { UsersType } from "@/features/users";
 
 export type UpdateProfileDTO = {
   data: {
@@ -21,7 +21,7 @@ export const updateProfile = async ({ data }: UpdateProfileDTO) => {
   if (userResponse === null) throw Error();
 
   const { error, data: user } = await supabase
-    .from<User>("users")
+    .from<UsersType>("users")
     .update(data)
     .eq("email", userResponse.email as string);
 

@@ -1,16 +1,16 @@
 import { useQuery } from "react-query";
 import { ExtractFnReturnType, QueryConfig } from "@/lib/react-query";
 
-import { Discussion } from "../types";
+import { DiscussionsType } from "../types";
 import { supabase } from "@/lib/initSupabase";
 
 export const getDiscussion = async ({
   discussionId,
 }: {
   discussionId: string;
-}): Promise<Discussion | undefined> => {
+}): Promise<DiscussionsType | undefined> => {
   const { data: discussion } = await supabase
-    .from<Discussion>("discussions")
+    .from<DiscussionsType>("discussions")
     .select()
     .eq("id", discussionId);
 

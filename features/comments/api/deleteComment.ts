@@ -2,12 +2,12 @@ import { useMutation } from "react-query";
 import { MutationConfig, queryClient } from "@/lib/react-query";
 import { useNotificationStore } from "@/stores/notifications";
 
-import { Comment } from "../types";
+import { CommentsType } from "../types";
 import { supabase } from "@/lib/initSupabase";
 
 export const deleteComment = async ({ commentId }: { commentId: number }) => {
   const { data } = await supabase
-    .from<Comment>("comments")
+    .from<CommentsType>("comments")
     .delete()
     .match({ id: commentId });
 
@@ -28,7 +28,7 @@ export const useDeleteComment = ({
     onMutate: async (deletedComment) => {
       await queryClient.cancelQueries(["comments", discussionId]);
 
-      const previousComments = queryClient.getQueryData<Comment[]>([
+      const previousComments = queryClient.getQueryData<CommentsType[]>([
         "comments",
         discussionId,
       ]);

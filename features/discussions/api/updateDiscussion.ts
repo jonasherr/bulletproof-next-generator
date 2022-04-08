@@ -2,7 +2,7 @@ import { useMutation } from "react-query";
 import { MutationConfig, queryClient } from "@/lib/react-query";
 import { useNotificationStore } from "@/stores/notifications";
 
-import { Discussion } from "../types";
+import { DiscussionsType } from "../types";
 import { supabase } from "@/lib/initSupabase";
 
 export type UpdateDiscussionDTO = {
@@ -16,9 +16,9 @@ export type UpdateDiscussionDTO = {
 export const updateDiscussion = async ({
   data,
   discussionId,
-}: UpdateDiscussionDTO): Promise<Discussion> => {
+}: UpdateDiscussionDTO): Promise<DiscussionsType> => {
   const { data: updatedDiscussion } = await supabase
-    .from<Discussion>("discussions")
+    .from<DiscussionsType>("discussions")
     .update(data)
     .match({ id: discussionId });
 
@@ -43,7 +43,7 @@ export const useUpdateDiscussion = ({
         updatingDiscussion?.discussionId,
       ]);
 
-      const previousDiscussion = queryClient.getQueryData<Discussion>([
+      const previousDiscussion = queryClient.getQueryData<DiscussionsType>([
         "discussion",
         updatingDiscussion?.discussionId,
       ]);

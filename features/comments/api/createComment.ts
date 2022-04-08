@@ -2,7 +2,7 @@ import { useMutation } from "react-query";
 import { MutationConfig, queryClient } from "@/lib/react-query";
 import { useNotificationStore } from "@/stores/notifications";
 
-import { Comment } from "../types";
+import { CommentsType } from "../types";
 import { supabase } from "@/lib/initSupabase";
 
 export type CreateCommentDTO = {
@@ -14,9 +14,9 @@ export type CreateCommentDTO = {
 
 export const createComment = async ({
   data,
-}: CreateCommentDTO): Promise<Comment> => {
+}: CreateCommentDTO): Promise<CommentsType> => {
   const { data: createdComment } = await supabase
-    .from<Comment>("comments")
+    .from<CommentsType>("comments")
     .insert([{ ...data, authorId: "abc" }]);
 
   if (createdComment === null) throw Error();
@@ -39,7 +39,7 @@ export const useCreateComment = ({
     onMutate: async (newComment) => {
       await queryClient.cancelQueries(["comments", discussionId]);
 
-      const previousComments = queryClient.getQueryData<Comment[]>([
+      const previousComments = queryClient.getQueryData<CommentsType[]>([
         "comments",
         discussionId,
       ]);

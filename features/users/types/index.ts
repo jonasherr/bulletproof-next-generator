@@ -1,6 +1,6 @@
 import { BaseEntity } from "@/types";
 
-export type User = {
+export type UsersType = {
   firstName: string;
   lastName: string;
   email: string;

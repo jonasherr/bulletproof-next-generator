@@ -2,7 +2,7 @@ import { CustomLink, Spinner, Table } from "@/components/Elements";
 import { formatDate } from "@/utils/format";
 
 import { useDiscussions } from "../api/getDiscussions";
-import { Discussion } from "../types";
+import { DiscussionsType } from "../types";
 
 import { DeleteDiscussion } from "./DeleteDiscussion";
 
@@ -20,7 +20,7 @@ export const DiscussionsList = () => {
   if (!discussionsQuery.data) return null;
 
   return (
-    <Table<Discussion>
+    <Table<DiscussionsType>
       data={discussionsQuery.data}
       columns={[
         {

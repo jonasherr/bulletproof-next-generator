@@ -1,16 +1,16 @@
 import { useQuery } from "react-query";
 import { ExtractFnReturnType, QueryConfig } from "@/lib/react-query";
 
-import { Comment } from "../types";
+import { CommentsType } from "../types";
 import { supabase } from "@/lib/initSupabase";
 
 export const getComments = async ({
   discussionId,
 }: {
   discussionId: number;
-}): Promise<Comment[]> => {
+}): Promise<CommentsType[]> => {
   const response = await supabase
-    .from<Comment>("comments")
+    .from<CommentsType>("comments")
     .select("*")
     .eq("discussionId", discussionId);
 

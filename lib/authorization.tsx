@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Comment } from "@/features/comments";
+import { CommentsType } from "@/features/comments";
 
 import { useAuth } from "./auth";
 import { AuthUser } from "@/features/auth";
@@ -13,7 +13,7 @@ export enum ROLES {
 type RoleTypes = keyof typeof ROLES;
 
 export const POLICIES = {
-  "comment:delete": (user: AuthUser, comment: Comment) => {
+  "comment:delete": (user: AuthUser, comment: CommentsType) => {
     if (user.role === ROLES.ADMIN) {
       return true;
     }

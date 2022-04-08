@@ -1,11 +1,13 @@
 import { useQuery } from "react-query";
 import { ExtractFnReturnType, QueryConfig } from "@/lib/react-query";
 
-import { Discussion } from "../types";
+import { DiscussionsType } from "../types";
 import { supabase } from "@/lib/initSupabase";
 
-export const getDiscussions = async (): Promise<Discussion[]> => {
-  const response = await supabase.from<Discussion>("discussions").select("*");
+export const getDiscussions = async (): Promise<DiscussionsType[]> => {
+  const response = await supabase
+    .from<DiscussionsType>("discussions")
+    .select("*");
 
   return response.data ?? [];
 };

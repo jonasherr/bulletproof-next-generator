@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "@/lib/initSupabase";
-import { User } from "@/features/users";
+import { UsersType } from "@/features/users";
 
 export default async function deleteUser(
   req: NextApiRequest,
@@ -18,7 +18,7 @@ export default async function deleteUser(
   if (error !== null) res.status(500);
 
   const { error: deletePublicUserDataError } = await supabase
-    .from<User>("users")
+    .from<UsersType>("users")
     .delete()
     .match({ email: user?.email });
 

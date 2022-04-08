@@ -4,7 +4,7 @@ import { axios } from "@/lib/axios";
 import { MutationConfig, queryClient } from "@/lib/react-query";
 import { useNotificationStore } from "@/stores/notifications";
 
-import { User } from "../types";
+import { UsersType } from "../types";
 
 export type DeleteUserDTO = {
   userId: string;
@@ -25,7 +25,7 @@ export const useDeleteUser = ({ config }: UseDeleteUserOptions = {}) => {
     onMutate: async (deletedUser) => {
       await queryClient.cancelQueries("users");
 
-      const previousUsers = queryClient.getQueryData<User[]>("users");
+      const previousUsers = queryClient.getQueryData<UsersType[]>("users");
 
       queryClient.setQueryData(
         "users",

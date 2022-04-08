@@ -1,6 +1,6 @@
 import { BaseEntity } from "@/types";
 
-export type Discussion = {
+export type DiscussionsType = {
   title: string;
   body: string;
 } & BaseEntity;
