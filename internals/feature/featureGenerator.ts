@@ -1,13 +1,36 @@
-import {getDirectories,} from "./utils.mjs";
-import {camelCase} from "change-case";
-import {registerHelpers} from "./helpers.mjs";
+import {
+  appendFile,
+  convertSwaggerDataTypesToTypescriptTypes,
+  getDirectories,
+  renderHandleBarTemplate,
+  returnTemplateArray,
+} from "./utils";
+import { camelCase, snakeCase } from "change-case";
+import { registerHelpers } from "./helpers";
+import { Spec } from "swagger-schema-official";
+import * as path from "path";
 
-export const featureGenerator = async ({swaggerSpecification, mode}) => {
+export enum modeEnum {
+  FILEPATH = "filePath",
+  SUPABASE = "supabase",
+  URL = "URL",
+}
+
+export const featureGenerator = async ({
+  swaggerSpecification,
+  mode,
+}: {
+  swaggerSpecification: Spec;
+  mode: modeEnum;
+}) => {
   console.time("⏱ Generation time");
 
-  const existingFeatureArray = await getDirectories("./features");
+  const existingFeatureArray = await getDirectories(path.dirname("./features"));
 
   registerHelpers();
+
+  if (!swaggerSpecification.definitions)
+    return console.error("No definitions provided on Swagger Specification");
 
   Object.entries(swaggerSpecification.definitions).forEach(([key, value]) => {
     if (existingFeatureArray.includes(key)) {
@@ -23,20 +46,16 @@ export const featureGenerator = async ({swaggerSpecification, mode}) => {
       // create new types
       const { required: requiredProperties, properties } = value;
 
-      /*
-       * Types structure:
-       *
-       * name: string (name of the type example commentId)
-       * type: Typescript type (actual typescript type)
-       * optional: boolean
-       * primaryKey?: true
-       * foreignKey?: true
-       *
-       * */
+      if (!requiredProperties || !properties)
+        return console.error(`A random error occurred when generating ${key}`);
+
       const types = Object.entries(properties).map(([key, value]) => {
         return {
           name: key,
-          type: value.type,
+          type: convertSwaggerDataTypesToTypescriptTypes({
+            type: value.type,
+            format: value.format,
+          }),
           optional: !requiredProperties.includes(key),
           primaryKey: value.description?.includes("<pk/>"),
           foreignKey: value.description?.includes("<fk"),
@@ -51,14 +70,21 @@ export const featureGenerator = async ({swaggerSpecification, mode}) => {
       });
       typescriptTypes += "}";
 
-      console.log({ name: key, value: typescriptTypes, types })
+      const handleBarData = {
+        name: key,
+        value: typescriptTypes,
+        types,
+        axios: mode !== modeEnum.SUPABASE,
+      };
 
-      /*returnTemplateArray(key).forEach(({ path, templateFile }) => {
+      console.log(handleBarData);
+
+      returnTemplateArray(key).forEach(({ path, templateFile }) => {
         console.log(`✅ ${path}`);
         renderHandleBarTemplate({
           path,
           templateFile,
-          data: { name: key, value: typescriptTypes, types },
+          data: handleBarData,
         });
       });
 
@@ -68,11 +94,11 @@ export const featureGenerator = async ({swaggerSpecification, mode}) => {
         )}", icon: FolderIcon },`,
         regex: /{ name: ".*", to: ".*", icon: .* },/,
         path: "./components/Layout/MainLayout.tsx",
-      });*/
+      });
 
       console.log(`🚀 New feature ${key} was generated`);
     }
   });
-  console.log(mode)
+  console.log(mode);
   console.timeEnd("⏱ Generation time");
 };

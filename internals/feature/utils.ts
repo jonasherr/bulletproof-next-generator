@@ -1,24 +1,41 @@
-import {existsSync, mkdirSync, readFileSync, writeFileSync} from "fs";
-import handlebars from "handlebars";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import * as handlebars from "handlebars";
 import * as changeCase from "change-case";
-import {readdir} from "fs/promises";
+import { readdir } from "fs/promises";
+import { ParameterType } from "swagger-schema-official";
 
-export const getDirectories = async source =>
-    (await readdir(source, {withFileTypes: true}))
-        .filter(dirent => dirent.isDirectory())
-        .map(dirent => dirent.name)
+export const getDirectories = async (source: string) =>
+  (await readdir(source, { withFileTypes: true }))
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => dirent.name);
 
-export const renderHandleBarTemplate = ({ path, templateFile, data }) => {
+export const renderHandleBarTemplate = ({
+  path,
+  templateFile,
+  data,
+}: {
+  path: string;
+  templateFile: string;
+  data: {};
+}) => {
   const directory = path.split("/").slice(0, -1).join("/");
   if (!existsSync(directory)) mkdirSync(directory, { recursive: true });
 
   const test = readFileSync(templateFile).toString();
-  const Template = handlebars.compile(test, {noEscape: true});
+  const Template = handlebars.compile(test, { noEscape: true });
   const result = Template(data);
   writeFileSync(path, result);
 };
 
-export const appendFile = ({ stringToAppend, regex, path }) => {
+export const appendFile = ({
+  stringToAppend,
+  regex,
+  path,
+}: {
+  stringToAppend: string;
+  regex: RegExp;
+  path: string;
+}) => {
   let mainLayoutFile = readFileSync(path).toString();
 
   const replacedFile = mainLayoutFile.replace(regex, `$& \n ${stringToAppend}`);
@@ -26,7 +43,39 @@ export const appendFile = ({ stringToAppend, regex, path }) => {
   writeFileSync(path, replacedFile);
 };
 
-export const returnTemplateArray = (key) => {
+export const convertSwaggerDataTypesToTypescriptTypes = ({
+  type,
+  format,
+}: {
+  type?: ParameterType;
+  format?: string;
+}) => {
+  switch (type) {
+    case "string":
+      switch (format) {
+        case "date":
+          return "Date";
+        case "date-time":
+          return "Date";
+        default:
+          return "string";
+      }
+    case "integer":
+      return "number";
+    case "number":
+      return type;
+    case "boolean":
+      return type;
+    case "array":
+      return type;
+    case "object":
+      return type;
+    default:
+      return "string";
+  }
+};
+
+export const returnTemplateArray = (key: string) => {
   return [
     {
       path: `./features/${changeCase.snakeCase(key)}/index.ts`,
