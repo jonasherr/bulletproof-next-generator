@@ -1,13 +1,46 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import * as handlebars from "handlebars";
 import * as changeCase from "change-case";
+import { camelCase } from "change-case";
 import { readdir } from "fs/promises";
-import { ParameterType } from "swagger-schema-official";
+import { ParameterType, Schema } from "swagger-schema-official";
 
 export const getDirectories = async (source: string) =>
   (await readdir(source, { withFileTypes: true }))
     .filter((dirent) => dirent.isDirectory())
     .map((dirent) => dirent.name);
+
+export const returnTypes = ({ value, key }: { value: Schema; key: string }) => {
+  const { required: requiredProperties, properties } = value;
+
+  if (!requiredProperties || !properties)
+    throw new Error(`A random error occurred when generating ${key}`);
+
+  const types = Object.entries(properties).map(([key, value]) => {
+    return {
+      name: key,
+      type: convertSwaggerDataTypesToTypescriptTypes({
+        type: value.type,
+        format: value.format,
+      }),
+      optional: !requiredProperties.includes(key),
+      primaryKey: value.description?.includes("<pk/>"),
+      foreignKey: value.description?.includes("<fk"),
+    };
+  });
+
+  let typescriptTypes = "{\n";
+  types
+    .filter((type) => type.name !== "id" && type.name !== "createdAt")
+    .forEach((type) => {
+      typescriptTypes += `  ${camelCase(type.name)}${
+        type.optional ? "?" : ""
+      }: ${type.type}, \n`;
+    });
+  typescriptTypes += "}";
+
+  return { types, typescriptTypes };
+};
 
 export const renderHandleBarTemplate = ({
   path,

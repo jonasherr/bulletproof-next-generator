@@ -1,13 +1,14 @@
 import {
   appendFile,
-  convertSwaggerDataTypesToTypescriptTypes,
   getDirectories,
   renderHandleBarTemplate,
   returnTemplateArray,
+  returnTypes,
 } from "./utils";
-import { camelCase, snakeCase } from "change-case";
+import { pascalCase, snakeCase } from "change-case";
 import { registerHelpers } from "./helpers";
 import { Spec } from "swagger-schema-official";
+import { readFileSync, writeFileSync } from "fs";
 
 export enum modeEnum {
   FILEPATH = "filePath",
@@ -32,40 +33,28 @@ export const featureGenerator = async ({
     return console.error("No definitions provided on Swagger Specification");
 
   Object.entries(swaggerSpecification.definitions).forEach(([key, value]) => {
+    const { types, typescriptTypes } = returnTypes({ value, key });
     if (existingFeatureArray.includes(key)) {
       // refresh types
-      /*
-       * - features/feature/types/index.ts
-       * */
+      const path = `./features/${key}/types/index.ts`;
+
+      const mainLayoutFile = readFileSync(path).toString();
+
+      const regex = new RegExp(
+        `export type ${pascalCase(key)}Type = {.*?}`,
+        "s"
+      );
+
+      const replacedFile = mainLayoutFile.replace(
+        regex,
+        `export type ${pascalCase(key)}Type = ${typescriptTypes}`
+      );
+
+      writeFileSync(path, replacedFile);
+
       console.log(`🧑‍🔧 Feature ${key} was refreshed`);
     } else {
       // create new types
-      const { required: requiredProperties, properties } = value;
-
-      if (!requiredProperties || !properties)
-        return console.error(`A random error occurred when generating ${key}`);
-
-      const types = Object.entries(properties).map(([key, value]) => {
-        return {
-          name: key,
-          type: convertSwaggerDataTypesToTypescriptTypes({
-            type: value.type,
-            format: value.format,
-          }),
-          optional: !requiredProperties.includes(key),
-          primaryKey: value.description?.includes("<pk/>"),
-          foreignKey: value.description?.includes("<fk"),
-        };
-      });
-
-      let typescriptTypes = "{\n";
-      types.forEach((type) => {
-        typescriptTypes += `  ${camelCase(type.name)}${
-          type.optional ? "?" : ""
-        }: ${type.type}, \n`;
-      });
-      typescriptTypes += "}";
-
       const handleBarData = {
         name: key,
         value: typescriptTypes,
