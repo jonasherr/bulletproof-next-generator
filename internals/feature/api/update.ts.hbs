@@ -3,7 +3,12 @@ import { MutationConfig, queryClient } from "@/lib/react-query";
 import { useNotificationStore } from "@/stores/notifications";
 
 import { {{properCase name}}Type } from "../types";
+{{#unless axios}}
 import { supabase } from "@/lib/initSupabase";
+{{/unless}}
+{{#if axios}}
+import { axios } from "@/lib/axios";
+{{/if}}
 
 export type Update{{properCase name}}DTO = {
   data: {
@@ -18,14 +23,19 @@ export const update{{properCase name}} = async ({
   data,
   {{camelCase name}}Id,
 }: Update{{properCase name}}DTO): Promise<{{properCase name}}Type> => {
+  {{#unless axios}}
   const { data: updated{{properCase name}} } = await supabase
     .from<{{properCase name}}Type>("{{dashCase name}}")
     .update(data)
     .match({ id: {{camelCase name}}Id });
+  {{/unless}}
+  {{#if axios}}
+  const { data: updated{{properCase name}} } = await axios.put<{{properCase name}}Type>(`/{{dashCase name}}/{{turnIntoInterpolationVariableWithId (dashCase name)}}`, data);
+  {{/if}}
 
   if (updated{{properCase name}} === null) throw Error();
 
-  return updated{{properCase name}}[0];
+  return updated{{properCase name}}{{#unless axios}}[0]{{/unless}};
 };
 
 type UseUpdate{{properCase name}}Options = {

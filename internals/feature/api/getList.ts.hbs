@@ -2,12 +2,22 @@ import { useQuery } from "react-query";
 import { ExtractFnReturnType, QueryConfig } from "@/lib/react-query";
 
 import { {{properCase name}}Type } from "../types";
+{{#unless axios}}
 import { supabase } from "@/lib/initSupabase";
+{{/unless}}
+{{#if axios}}
+import { axios } from "@/lib/axios";
+{{/if}}
 
 export const get{{properCase name}}s = async (): Promise<{{properCase name}}Type[]> => {
-  const response = await supabase.from<{{properCase name}}Type>("{{dashCase name}}").select("*");
+  {{#unless axios}}
+  const { data } = await supabase.from<{{properCase name}}Type>("{{dashCase name}}").select("*");
+  {{/unless}}
+  {{#if axios}}
+  const { data } = await axios.get<{{properCase name}}Type[]>("/{{dashCase name}}");
+  {{/if}}
 
-  return response.data ?? [];
+  return data ?? [];
 };
 
 type QueryFnType = typeof get{{properCase name}}s;

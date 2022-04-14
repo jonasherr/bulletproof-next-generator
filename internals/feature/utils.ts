@@ -54,8 +54,8 @@ export const renderHandleBarTemplate = ({
   const directory = path.split("/").slice(0, -1).join("/");
   if (!existsSync(directory)) mkdirSync(directory, { recursive: true });
 
-  const test = readFileSync(templateFile).toString();
-  const Template = handlebars.compile(test, { noEscape: true });
+  const templateFileString = readFileSync(templateFile).toString();
+  const Template = handlebars.compile(templateFileString, { noEscape: true });
   const result = Template(data);
   writeFileSync(path, result);
 };

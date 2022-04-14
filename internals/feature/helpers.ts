@@ -2,6 +2,14 @@ import * as changeCase from "change-case";
 import * as handlebars from "handlebars";
 
 export const registerHelpers = () => {
+  handlebars.registerHelper(
+    "turnIntoInterpolationVariableWithId",
+    function (text) {
+      const result = "${" + text + "Id}";
+      return new handlebars.SafeString(result);
+    }
+  );
+
   handlebars.registerHelper("isBoolean", function (value) {
     return value === "boolean";
   });

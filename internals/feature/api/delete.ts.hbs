@@ -3,19 +3,31 @@ import { MutationConfig, queryClient } from "@/lib/react-query";
 import { useNotificationStore } from "@/stores/notifications";
 
 import { {{properCase name}}Type } from "../types";
+{{#unless axios}}
 import { supabase } from "@/lib/initSupabase";
+{{/unless}}
+{{#if axios}}
+import { axios } from "@/lib/axios";
+{{/if}}
 
 export const delete{{properCase name}} = async ({
   {{camelCase name}}Id,
 }: {
   {{camelCase name}}Id: number;
 }) => {
+  {{#unless axios}}
   const { data, error } = await supabase
     .from<{{properCase name}}Type>("{{dashCase name}}")
     .delete()
     .match({ id: {{camelCase name}}Id });
 
   if (error !== null) throw Error();
+  {{/unless}}
+  {{#if axios}}
+  const { data } = await axios.delete<{{properCase name}}Type>(`/{{dashCase name}}/{{turnIntoInterpolationVariableWithId (dashCase name)}}`);
+
+  if (data === null || data === undefined) throw Error();
+  {{/if}}
 
   return data;
 };

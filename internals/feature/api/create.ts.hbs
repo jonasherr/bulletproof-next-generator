@@ -3,7 +3,12 @@ import { MutationConfig, queryClient } from "@/lib/react-query";
 import { useNotificationStore } from "@/stores/notifications";
 
 import { {{properCase name}}Type } from "../types";
+{{#unless axios}}
 import { supabase } from "@/lib/initSupabase";
+{{/unless}}
+{{#if axios}}
+import { axios } from "@/lib/axios";
+{{/if}}
 
 export type Create{{properCase name}}DTO = {
   data: {
@@ -16,13 +21,19 @@ export type Create{{properCase name}}DTO = {
 export const create{{properCase name}} = async ({
   data,
 }: Create{{properCase name}}DTO): Promise<{{properCase name}}Type> => {
+  {{#unless axios}}
   const { data: created{{properCase name}} } = await supabase
     .from<{{properCase name}}Type>("{{dashCase name}}")
     .insert([data]);
+  {{/unless}}
+  {{#if axios}}
+    const { data: created{{properCase name}} } = await axios.post<{{properCase name}}Type>("/{{dashCase name}}", data);
+  {{/if}}
+
 
   if (created{{properCase name}} === null) throw Error();
 
-  return created{{properCase name}}[0];
+  return created{{properCase name}}{{#unless axios}}[0]{{/unless}};
 };
 
 type UseCreate{{properCase name}}Options = {
