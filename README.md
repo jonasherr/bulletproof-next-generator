@@ -1,41 +1,97 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped
-with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Scaffolding NextJS Applications based on the OpenAPI Specification
 
-## Getting Started
+A scaffolding tool that uses the [OpenAPI Specification](https://swagger.io/specification/)
+to create a NextJS Application. The NextJS Project structure is inspired from alan2207s
+[bulletproof-react](https://github.com/alan2207/bulletproof-react) architecture.
 
-First, run the development server:
+## Install project and dependencies
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+    git clone https://github.com/jonasherr/bulletproof-next-generator
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+    npm run install
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Specify OpenAPI Specification in .env file
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed
-on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited
-in `pages/api/register.ts`.
+You can use three different ways to provide the scaffolding tool with the mandatory specification file.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated
-as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+<details>
+<summary><b>1. Supabase (current default solution)</b></summary>
 
-## Learn More
+### Signup
 
-To learn more about Next.js, take a look at the following resources:
+If you do not have a supabase account already go to [https://app.supabase.io](https://app.supabase.io)
+and sign up.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Create Project
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions
-are welcome!
+If you do not have an existing supabase project click on "New Project" to create a new project.
 
-## Deploy on Vercel
+### Create Database structure
 
-The easiest way to deploy your Next.js app is to use
-the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme)
-from the creators of Next.js.
+Use the SQL Editor (https://app.supabase.io/project/YOUR-PROJECT-NAME/sql) of supabase to create new tables in your
+database. You can also use their table editor UI (https://app.supabase.io/project/YOUR-PROJECT-NAME/editor), if you
+don't feel confident to write SQL.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<details>
+<summary><b>If you want to play around with some example data in the project you can add these tables in SQL Editor:</b></summary>
+
+EXAMPLE QUERIES
+
+</details>
+
+Add your supabase ANON KEY and URL to the [.env](.env) file. ANON KEY and URL can be found in your supabase dashboard in
+<br/> Settings > API (https://app.supabase.io/project/YOUR-PROJECT-NAME/settings/api).
+
+    NEXT_PUBLIC_SUPABASE_URL=https://your-supabase-url.supabase.co
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR-ANON-KEY
+
+</details>
+
+<details>
+<summary><b>2. OpenAPI API Route from custom backend</b></summary>
+
+Save the url of your OpenAPI Route of your custom backend in the [.env](.env) file.
+
+    SWAGGER_SPECIFICATION_URL=https://your-custom-backend.com/open-api
+
+</details>
+
+<details>
+<summary><b>3. Local OpenAPI Specification file</b></summary>
+
+Save the filepath to your OpenAPI Specification file in the .env file.
+
+    SWAGGER_SPECIFICATION_FILE_PATH=../swaggerSpecification.json
+
+</details>
+
+_Hint: The scaffolding tool currently uses supabase for authentication out of the box. So please adjust your custom
+authentication server in [auth.tsx](lib/auth.tsx), if you are not using supabase._
+
+## Optionally remove example data
+
+There are there three features that are used to show you possible implementation based on the bulletproof-react
+achitecture. If you don't want this data remove the folders: comments, discussions and users
+from [./features](./features), [./pages](./pages) and remove the routes
+from [./components/Layout/MainLayout.tsx](./components/Layout/MainLayout.tsx) in line 26.
+
+## Generate new features
+
+To scaffold the features from your OpenAPI Specification run the generate command in your Terminal.
+
+    npm run generate
+
+The command can be rerun when you added new features or adjusted the table structure of already existing features. When
+you adjusted the table structure the scaffolding command will only adjust the types of the existing feature, to prevent
+overwrite problems with already specified features.
+
+## Start developing
+
+Your scaffolded application is ready. To start developing, start your development server in your Terminal:
+
+    npm run dev
+
+## Deployment
+
+Information about [deployment](https://nextjs.org/docs/deployment) or NextJS in general can be found on
+their [documentation site](https://nextjs.org/docs/getting-started).
