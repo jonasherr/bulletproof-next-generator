@@ -47,7 +47,7 @@ export const CommentsList = ({ discussionId }: CommentsListProps) => {
           className="w-full bg-white shadow-sm p-4"
         >
           <Authorization
-            policyCheck={POLICIES["comment:delete"](user as AuthUser, comment)}
+            policyCheck={POLICIES["comment:delete"](user as AuthUser)}
           >
             <div className="flex justify-between">
               <span className="text-xs font-semibold">
