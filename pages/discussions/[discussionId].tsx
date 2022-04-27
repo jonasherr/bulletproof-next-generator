@@ -11,7 +11,8 @@ import * as React from "react";
 
 const Discussion = () => {
   const { query } = useRouter();
-  const discussionId = query.discussionId as string;
+  // @ts-ignore discussionId exists on query
+  const discussionId = parseInt(query.discussionId);
   const discussionQuery = useDiscussion({ discussionId });
 
   if (discussionQuery.isLoading) {
@@ -30,7 +31,7 @@ const Discussion = () => {
         <title>{discussionQuery.data.title}</title>
       </Head>
       <MainLayout>
-        <ContentLayout title={discussionQuery.data.title}>
+        <ContentLayout title={discussionQuery.data.title ?? ""}>
           <span className="text-xs font-bold">
             {formatDate(discussionQuery.data.createdAt)}
           </span>

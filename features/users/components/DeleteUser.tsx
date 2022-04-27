@@ -1,10 +1,10 @@
-import { Button, ConfirmationDialog } from '@/components/Elements';
-import { useAuth } from '@/lib/auth';
+import { Button, ConfirmationDialog } from "@/components/Elements";
+import { useAuth } from "@/lib/auth";
 
-import { useDeleteUser } from '../api/deleteUser';
+import { useDeleteUser } from "../api/deleteUser";
 
 type DeleteUserProps = {
-  id: string;
+  id: number;
 };
 
 export const DeleteUser = ({ id }: DeleteUserProps) => {

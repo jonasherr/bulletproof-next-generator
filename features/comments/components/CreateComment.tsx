@@ -1,17 +1,17 @@
-import { PlusIcon } from '@heroicons/react/outline';
-import * as z from 'zod';
+import { PlusIcon } from "@heroicons/react/outline";
+import * as z from "zod";
 
-import { Button } from '@/components/Elements';
-import { Form, FormDrawer, TextAreaField } from '@/components/Form';
+import { Button } from "@/components/Elements";
+import { Form, FormDrawer, TextAreaField } from "@/components/Form";
 
-import { CreateCommentDTO, useCreateComment } from '../api/createComment';
+import { CreateCommentDTO, useCreateComment } from "../api/createComment";
 
 const schema = z.object({
-  body: z.string().min(1, 'Required'),
+  body: z.string().min(1, "Required"),
 });
 
 type CreateCommentProps = {
-  discussionId: string;
+  discussionId: number;
 };
 
 export const CreateComment = ({ discussionId }: CreateCommentProps) => {
@@ -38,7 +38,7 @@ export const CreateComment = ({ discussionId }: CreateCommentProps) => {
           </Button>
         }
       >
-        <Form<CreateCommentDTO['data'], typeof schema>
+        <Form<CreateCommentDTO["data"], typeof schema>
           id="create-comment"
           onSubmit={async (values) => {
             await createCommentMutation.mutateAsync({
@@ -53,8 +53,8 @@ export const CreateComment = ({ discussionId }: CreateCommentProps) => {
           {({ register, formState }) => (
             <TextAreaField
               label="Body"
-              error={formState.errors['body']}
-              registration={register('body')}
+              error={formState.errors["body"]}
+              registration={register("body")}
             />
           )}
         </Form>

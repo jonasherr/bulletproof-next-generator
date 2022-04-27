@@ -10,7 +10,7 @@ export type UpdateDiscussionDTO = {
     title: string;
     body: string;
   };
-  discussionId: string;
+  discussionId: number;
 };
 
 export const updateDiscussion = async ({

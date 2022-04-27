@@ -1,8 +1,8 @@
-import { CommentsList } from './CommentsList';
-import { CreateComment } from './CreateComment';
+import { CommentsList } from "./CommentsList";
+import { CreateComment } from "./CreateComment";
 
 type CommentsProps = {
-  discussionId: string;
+  discussionId: number;
 };
 
 export const Comments = ({ discussionId }: CommentsProps) => {

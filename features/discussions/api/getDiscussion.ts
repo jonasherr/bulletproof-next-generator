@@ -7,7 +7,7 @@ import { supabase } from "@/lib/initSupabase";
 export const getDiscussion = async ({
   discussionId,
 }: {
-  discussionId: string;
+  discussionId: number;
 }): Promise<DiscussionsType | undefined> => {
   const { data: discussion } = await supabase
     .from<DiscussionsType>("discussions")
@@ -22,7 +22,7 @@ export const getDiscussion = async ({
 type QueryFnType = typeof getDiscussion;
 
 type UseDiscussionOptions = {
-  discussionId: string;
+  discussionId: number;
   config?: QueryConfig<QueryFnType>;
 };
 

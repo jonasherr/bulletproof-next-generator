@@ -8,7 +8,7 @@ import { supabase } from "@/lib/initSupabase";
 export type CreateCommentDTO = {
   data: {
     body: string;
-    discussionId: string;
+    discussionId: number;
   };
 };
 
@@ -17,7 +17,7 @@ export const createComment = async ({
 }: CreateCommentDTO): Promise<CommentsType> => {
   const { data: createdComment } = await supabase
     .from<CommentsType>("comments")
-    .insert([{ ...data, authorId: "abc" }]);
+    .insert([data]);
 
   if (createdComment === null) throw Error();
 
@@ -25,7 +25,7 @@ export const createComment = async ({
 };
 
 type UseCreateCommentOptions = {
-  discussionId: string;
+  discussionId: number;
   config?: MutationConfig<typeof createComment>;
 };
 
