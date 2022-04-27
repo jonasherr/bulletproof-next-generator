@@ -31,7 +31,8 @@ export const loginWithEmailAndPassword = async (
     useNotificationStore.getState().addNotification({
       type: "error",
       title: "Invalid credentials",
-      message: "Please make sure to enter valid credentials.",
+      message:
+        "Please make sure to enter valid credentials or to validate your email.",
     });
     return Promise.reject("Invalid credentials");
   }
