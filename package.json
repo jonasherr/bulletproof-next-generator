@@ -45,7 +45,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate": "ts-node internals/index.ts"
+    "generate": "cd internals && npm install && cd .. && ts-node internals/index.ts"
   },
   "version": "0.1.0"
 }
