@@ -16,27 +16,27 @@ export const returnTypes = ({ value, key }: { value: Schema; key: string }) => {
   if (!requiredProperties || !properties)
     throw new Error(`A random error occurred when generating ${key}`);
 
-  const types = Object.entries(properties).map(([key, value]) => {
-    return {
-      name: key,
-      type: convertSwaggerDataTypesToTypescriptTypes({
-        type: value.type,
-        format: value.format,
-      }),
-      optional: !requiredProperties.includes(key),
-      primaryKey: value.description?.includes("<pk/>"),
-      foreignKey: value.description?.includes("<fk"),
-    };
-  });
+  const types = Object.entries(properties)
+    .map(([key, value]) => {
+      return {
+        name: key,
+        type: convertSwaggerDataTypesToTypescriptTypes({
+          type: value.type,
+          format: value.format,
+        }),
+        optional: !requiredProperties.includes(key),
+        primaryKey: value.description?.includes("<pk/>"),
+        foreignKey: value.description?.includes("<fk"),
+      };
+    })
+    .filter((type) => type.name !== "id" && type.name !== "createdAt");
 
   let typescriptTypes = "{\n";
-  types
-    .filter((type) => type.name !== "id" && type.name !== "createdAt")
-    .forEach((type) => {
-      typescriptTypes += `  ${camelCase(type.name)}${
-        type.optional ? "?" : ""
-      }: ${type.type}, \n`;
-    });
+  types.forEach((type) => {
+    typescriptTypes += `  ${camelCase(type.name)}${type.optional ? "?" : ""}: ${
+      type.type
+    }, \n`;
+  });
   typescriptTypes += "}";
 
   return { types, typescriptTypes };
