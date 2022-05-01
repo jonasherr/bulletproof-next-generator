@@ -29,7 +29,7 @@ export const returnTypes = ({ value, key }: { value: Schema; key: string }) => {
         foreignKey: value.description?.includes("<fk"),
       };
     })
-    .filter((type) => type.name !== "id" && type.name !== "createdAt");
+    .filter((type) => type.name !== "id" && type.name !== "created_at");
 
   let typescriptTypes = "{\n";
   types.forEach((type) => {

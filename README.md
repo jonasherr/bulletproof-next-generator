@@ -28,7 +28,11 @@ and sign up.
 
 If you do not have an existing supabase project click on "New Project" to create a new project.\
 \
-<b>Wait till the project was created by supabase. This could take up to five minutes.</b>
+<b>Wait till the project was created by supabase. This could take up to five minutes.</b>\
+
+To save testing time and issues, you can temporarily disable email confirmation on signup. To do so go
+to https://app.supabase.io/project/YOUR-PROJECT-ID/auth/settings -> E-Mail Auth -> Disable email confirmation\
+When leaving it enabled you have to confirm your email address when you want to create a new account in the NextJS App.
 
 ### Create Database structure
 
